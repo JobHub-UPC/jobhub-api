@@ -23,11 +23,11 @@ public class CommentsGroup {
     @Column(name = "likes_count")
     private Integer likesCount;
 
-    @JsonIgnore
+    //@JsonIgnore
 
     //Muchos comentarios se asocian a una persona
     @ManyToOne
-    @JoinColumn(name = "member_id", referencedColumnName = "id",
+    @JoinColumn(name = "member_id", referencedColumnName = "user",
                 foreignKey = @ForeignKey(name = "FK_comments_member"))
     private Members members;
 }

@@ -37,11 +37,6 @@ public class FollowUpApplication {
     private Application application;
 
     @OneToOne
-    @JoinColumn(name = "job_id", referencedColumnName = "id",
-        foreignKey = @ForeignKey(name = "FK_follow_application_job"))
-    private Job job;
-
-    @OneToOne
     @JoinColumn(name = "application_qualification_id", referencedColumnName = "id",
         foreignKey = @ForeignKey(name = "FK_follow_application_qualification"))
     private ApplicantQualification applicantQualification;

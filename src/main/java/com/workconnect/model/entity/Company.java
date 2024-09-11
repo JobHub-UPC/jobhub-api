@@ -12,7 +12,7 @@ public class Company {
     @Id
     private Integer user;
 
-    @Column(name = "company_name", nullable = false, unique = true)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false)

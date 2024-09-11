@@ -12,7 +12,7 @@ public class Applicant {
     @Id
     private Integer user;
 
-    @Column(name = "fisrt_name", nullable = false, length = 50)
+    @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
 
     @Column(name = "last_name", nullable = false, length = 50)

@@ -9,7 +9,7 @@ import lombok.Data;
 public class ApplicantQualification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer applicantQualificationId;
+    private Integer id;
 
     @Column(nullable = false)
     private Integer level;

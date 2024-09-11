@@ -12,7 +12,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class MembersPK implements Serializable {
     @OneToOne
-    @JoinColumn(name = "member_id", referencedColumnName = "id",
+    @JoinColumn(name = "user_id", referencedColumnName = "id",
                 foreignKey = @ForeignKey(name = "fk_members_user"))
     private User user;
 }
