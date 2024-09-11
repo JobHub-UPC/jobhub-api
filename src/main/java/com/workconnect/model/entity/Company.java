@@ -1,14 +1,17 @@
 package com.workconnect.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name = "company")
+@IdClass(CompanyPK.class)
 public class Company {
+
+    @Id
+    private Integer user;
+
     @Column(name = "company_name", nullable = false, unique = true)
     private String name;
 
