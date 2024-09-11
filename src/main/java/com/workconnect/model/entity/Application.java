@@ -1,5 +1,6 @@
 package com.workconnect.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -15,6 +16,8 @@ public class Application {
 
     @Column(name = "date_created", nullable = false)
     private LocalDateTime dateCreated;
+
+    @JsonIgnore
 
     //Relación entre tablas -> llaves foráneas FK
     //Muchas aplicaciones se asociaran con un trabajo

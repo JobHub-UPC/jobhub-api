@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -26,6 +27,7 @@ public class FollowUpApplication {
     @Column(name = "status")
     private ApplicationStatus status;
 
+
     @JsonIgnore
 
     // Un seguimiento de aplicación se asocian con una apicación
@@ -44,4 +46,8 @@ public class FollowUpApplication {
         foreignKey = @ForeignKey(name = "FK_follow_application_qualification"))
     private ApplicantQualification applicantQualification;
 
+    // Relación de composición
+    // En un seguimiento puede haber muchos estados
+    //@OneToMany(mappedBy = "followUpApplication", cascade = CascadeType.ALL)
+    //private List<ApplicationStatus> applicationStatuses;
 }

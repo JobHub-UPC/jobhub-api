@@ -1,5 +1,6 @@
 package com.workconnect.model.entity;
 
+import com.workconnect.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,8 +14,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(unique = true, nullable = false)
-    private String role;
+    //@Column(unique = true, nullable = false)
+    //private String role;
 
     @Column(unique = true, nullable = false)
     private String email;
@@ -27,4 +28,8 @@ public class User {
 
     @Column(nullable = false)
     private Boolean active;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
 }

@@ -1,5 +1,6 @@
 package com.workconnect.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -20,6 +21,8 @@ public class CommentsApplication {
     private String author;
 
     private LocalDateTime created;
+
+    @JsonIgnore
 
     // Muchos comentarios se asocian a una aplicación
     @ManyToOne

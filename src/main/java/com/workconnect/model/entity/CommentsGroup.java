@@ -1,5 +1,6 @@
 package com.workconnect.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -21,6 +22,8 @@ public class CommentsGroup {
 
     @Column(name = "likes_count")
     private Integer likesCount;
+
+    @JsonIgnore
 
     //Muchos comentarios se asocian a una persona
     @ManyToOne

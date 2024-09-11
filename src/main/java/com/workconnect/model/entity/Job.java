@@ -1,9 +1,11 @@
 package com.workconnect.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -34,9 +36,15 @@ public class Job {
     @Column(nullable = false)
     private Float salary;
 
+    @JsonIgnore
     // Muchos trabajos se ascocian a una sola empresa
     @ManyToOne
     @JoinColumn(name = "company_id", referencedColumnName = "id",
                 foreignKey = @ForeignKey(name = "FK_jobs_company"))
     private Company company;
+
+    // Para cerrar la bidirecionalidad en una relación de composición
+    // En un trabajo, hay muchas aplicacione
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
+    private List<Application> applications;
 }

@@ -6,11 +6,11 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "applicant")
-
+@IdClass(ApplicantPK.class)
 public class Applicant {
+    //PK compuesta
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-
+    private Integer user;
 
     @Column(name = "fisrt_name", nullable = false, length = 50)
     private String firstName;
