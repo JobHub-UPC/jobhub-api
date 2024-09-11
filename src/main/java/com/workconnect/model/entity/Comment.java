@@ -1,5 +1,4 @@
 package com.workconnect.model.entity;
 
-public class ApplicationStatus {
-
+public class Comment {
 }
