@@ -2,47 +2,37 @@ package com.workconnect.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import java.util.Set;
 
 @Data
 @Entity
 @Table(name = "applicant")
+@IdClass(ApplicantPK.class)
 public class Applicant {
-
+    //PK compuesta
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_applicant")
-    private Integer idApplicant;
+    private Integer user;
 
-    @Column(name = "first_name", length = 50, nullable = false)
+    @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
 
-    @Column(name = "last_name", length = 50, nullable = false)
+    @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
 
-    @Column(name = "degree", length = 50)
-    private String degree;
-
-    @Column(name = "description", columnDefinition = "TEXT")
-    private String description;
-
-    @Column(name = "country", length = 50)
-    private String country;
-
-    @Column(name = "college", length = 50)
-    private String college;
-
-    @Column(name = "email", length = 50, nullable = false)
+    @Column(name = "email", nullable = false, length = 50, unique = true)
     private String email;
 
-    @Column(name = "phone", length = 50)
+    @Column(name = "phone", nullable = false, length = 50, unique = true)
     private String phone;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "FK_applicant_user"))
-    private User user;
+    @Column(name = "degree", nullable = false, length = 50)
+    private String degree;
 
-    @OneToMany(mappedBy = "applicant")
-    private Set<Application> applications;
+    @Column(name = "description", nullable = false, columnDefinition = "TEXT")
+    private String description;
+
+    @Column(name = "country", nullable = false, length = 50)
+    private String country;
+
+    @Column(name = "college", nullable = false, length = 50)
+    private String college;
 }

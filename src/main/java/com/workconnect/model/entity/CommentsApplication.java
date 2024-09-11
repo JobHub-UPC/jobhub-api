@@ -1,34 +1,32 @@
 package com.workconnect.model.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-import java.time.LocalDate;
+
+import java.time.LocalDateTime;
 
 @Data
 @Entity
 @Table(name = "comments_application")
 public class CommentsApplication {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_comment")
-    private Integer idComment;
+    private Integer id;
 
-    @Column(name = "comment", columnDefinition = "TEXT", nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String comment;
 
-    @Column(name = "date_created", nullable = false)
-    private LocalDate dateCreated;
-
-    @Column(name = "author", length = 50, nullable = false)
+    @Column(nullable = false)
     private String author;
 
-    @ManyToOne
-    @JoinColumn(name = "application_id", referencedColumnName = "id_application",
-            foreignKey = @ForeignKey(name = "FK_comment_application"))
-    private Application application;
+    private LocalDateTime created;
 
+    @JsonIgnore
+
+    // Muchos comentarios se asocian a una aplicación
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "FK_comment_user"))
-    private User user;
+    @JoinColumn(name = "application_id", referencedColumnName = "id",
+                foreignKey = @ForeignKey(name = "FK_comments_application"))
+    private Application application;
 }

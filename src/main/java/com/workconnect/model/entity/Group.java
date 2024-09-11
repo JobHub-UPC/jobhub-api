@@ -1,37 +1,30 @@
 package com.workconnect.model.entity;
 
-
 import jakarta.persistence.*;
 import lombok.Data;
-import java.time.LocalDate;
-import java.util.Set;
+
+import java.time.LocalDateTime;
 
 @Data
 @Entity
 @Table(name = "group")
 public class Group {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_group")
-    private Integer idGroup;
+    private Integer id;
 
-    @Column(name = "name", length = 50, nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "description", columnDefinition = "TEXT")
+    @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "create_date", nullable = false)
-    private LocalDate createDate;
+    @Column(name = "created_date", nullable = false)
+    private LocalDateTime createdDate;
 
     @Column(name = "members_count", nullable = false)
     private Integer membersCount;
 
     @Column(name = "is_private", nullable = false)
-    private boolean isPrivate;
-
-    @OneToMany(mappedBy = "group")
-    private Set<Member> members;
-
+    private Boolean isPrivate;
 }

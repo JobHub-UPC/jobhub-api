@@ -1,44 +1,35 @@
 package com.workconnect.model.entity;
 
+import com.workconnect.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.Data;
-import java.time.LocalDate;
-import java.util.Set;
+
+import java.time.LocalDateTime;
 
 @Data
 @Entity
 @Table(name = "user")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Integer id;
 
-    @Column(name = "role", length = 50, nullable = false)
-    private String role;
+    //@Column(unique = true, nullable = false)
+    //private String role;
 
-    @Column(name = "email", length = 50, unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(name = "password", length = 50, nullable = false)
+    @Column(unique = true, nullable = false)
     private String password;
 
-    @Column(name = "date_create", nullable = false)
-    private LocalDate dateCreate;
+    @Column(nullable = false)
+    private LocalDateTime created;
 
-    @Column(name = "active_account", nullable = false)
-    private boolean activeAccount;
+    @Column(nullable = false)
+    private Boolean active;
 
-    @OneToMany(mappedBy = "user")
-    private Set<Member> members;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    @OneToMany(mappedBy = "user")
-    private Set<Application> applications;
-
-    @OneToMany(mappedBy = "user")
-    private Set<Comment> comments;
-
-    @OneToOne(mappedBy = "user")
-    private Applicant applicant;
 }

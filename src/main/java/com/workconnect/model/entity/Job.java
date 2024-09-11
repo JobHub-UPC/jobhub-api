@@ -1,46 +1,50 @@
 package com.workconnect.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-import java.time.LocalDate;
-import java.util.Set;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
-@Table(name = "job")
+@Table(name =  "job")
 public class Job {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_job")
-    private Integer idJob;
+    private Integer id;
 
-    @Column(name = "title", length = 100, nullable = false)
+    @Column(nullable = false)
     private String title;
 
-    @Column(name = "description", columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "location", length = 100, nullable = false)
+    @Column(nullable = false)
     private String location;
 
-    @Column(name = "job_type", length = 50, nullable = false)
+    @Column(name = "job_type", nullable = false)
     private String jobType;
 
-    @Column(name = "salary_range", nullable = false)
-    private Double salaryRange;
-
     @Column(name = "posted_date", nullable = false)
-    private LocalDate postedDate;
+    private LocalDateTime postedDate;
 
-    @Column(name = "expiration_date", nullable = false)
-    private LocalDate expirationDate;
+    @Column(name = "deadline_date", nullable = false)
+    private LocalDateTime deadlineDate;
 
+    @Column(nullable = false)
+    private Float salary;
+
+    @JsonIgnore
+    // Muchos trabajos se ascocian a una sola empresa
     @ManyToOne
-    @JoinColumn(name = "company_id", referencedColumnName = "id_company",
-            foreignKey = @ForeignKey(name = "FK_job_company"))
+    @JoinColumn(name = "company_id", referencedColumnName = "id",
+                foreignKey = @ForeignKey(name = "FK_jobs_company"))
     private Company company;
 
-    @OneToMany(mappedBy = "job")
-    private Set<Application> applications;
+    // Para cerrar la bidirecionalidad en una relación de composición
+    // En un trabajo, hay muchas aplicacione
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
+    private List<Application> applications;
 }

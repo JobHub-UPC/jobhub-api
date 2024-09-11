@@ -1,40 +1,48 @@
 package com.workconnect.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.workconnect.model.enums.ApplicationStatus;
 import jakarta.persistence.*;
 import lombok.Data;
-import java.time.LocalDate;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
 @Table(name = "follow_up_application")
-public class FollowUpApplication {
 
+public class FollowUpApplication {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_follow_up_application")
-    private Integer idFollowUpApplication;
+    private Integer id;
 
     @Column(name = "application_date", nullable = false)
-    private LocalDate applicationDate;
+    private LocalDateTime applicationDate;
 
     @Column(name = "last_update", nullable = false)
-    private LocalDate lastUpdate;
-
-    @ManyToOne
-    @JoinColumn(name = "application_id", referencedColumnName = "id_application",
-            foreignKey = @ForeignKey(name = "FK_followup_application"))
-    private Application application;
+    private LocalDateTime lastUpdate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Column(name = "status")
     private ApplicationStatus status;
 
+
+    @JsonIgnore
+
+    // Un seguimiento de aplicación se asocian con una apicación
     @OneToOne
-    @JoinColumn(name = "qualification_id", referencedColumnName = "id_qualification",
-            foreignKey = @ForeignKey(name = "FK_followup_qualification"))
-    private ApplicationQualification idQualification;
+    @JoinColumn(name = "application_id", referencedColumnName = "id",
+        foreignKey = @ForeignKey(name = "FK_follow_application"))
+    private Application application;
+
+    @OneToOne
+    @JoinColumn(name = "application_qualification_id", referencedColumnName = "id",
+        foreignKey = @ForeignKey(name = "FK_follow_application_qualification"))
+    private ApplicantQualification applicantQualification;
+
+    // Relación de composición
+    // En un seguimiento puede haber muchos estados
+    //@OneToMany(mappedBy = "followUpApplication", cascade = CascadeType.ALL)
+    //private List<ApplicationStatus> applicationStatuses;
 }
-
-
-
