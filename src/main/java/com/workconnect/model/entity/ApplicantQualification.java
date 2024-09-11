@@ -10,4 +10,7 @@ public class ApplicantQualification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer applicantQualificationId;
+
+    @Column(nullable = false)
+    private Integer level;
 }

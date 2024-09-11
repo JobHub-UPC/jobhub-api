@@ -22,15 +22,13 @@ public class FollowUpApplication {
     @Column(name = "last_update", nullable = false)
     private LocalDateTime lastUpdate;
 
-    @Column(name = "notes", columnDefinition = "TEXT")
-    private String notes;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private ApplicationStatus status;
 
     @JsonIgnore
 
+    // Un seguimiento de aplicación se asocian con una apicación
     @OneToOne
     @JoinColumn(name = "application_id", referencedColumnName = "id",
         foreignKey = @ForeignKey(name = "FK_follow_application"))

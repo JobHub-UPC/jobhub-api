@@ -10,7 +10,7 @@ import lombok.Data;
 public class Applicant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer applicantId;
+
 
     @Column(name = "fisrt_name", nullable = false, length = 50)
     private String firstName;
@@ -18,10 +18,10 @@ public class Applicant {
     @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
 
-    @Column(name = "email", nullable = false, length = 50)
+    @Column(name = "email", nullable = false, length = 50, unique = true)
     private String email;
 
-    @Column(name = "phone", nullable = false, length = 50)
+    @Column(name = "phone", nullable = false, length = 50, unique = true)
     private String phone;
 
     @Column(name = "degree", nullable = false, length = 50)

@@ -22,7 +22,7 @@ public class Job {
     @Column(nullable = false)
     private String location;
 
-    @Column(nullable = false)
+    @Column(name = "job_type", nullable = false)
     private String jobType;
 
     @Column(name = "posted_date", nullable = false)
@@ -33,4 +33,10 @@ public class Job {
 
     @Column(nullable = false)
     private Float salary;
+
+    // Muchos trabajos se ascocian a una sola empresa
+    @ManyToOne
+    @JoinColumn(name = "company_id", referencedColumnName = "id",
+                foreignKey = @ForeignKey(name = "FK_jobs_company"))
+    private Company company;
 }
