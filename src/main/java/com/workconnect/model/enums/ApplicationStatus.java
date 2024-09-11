@@ -1,4 +1,8 @@
 package com.workconnect.model.enums;
 
-public class ApplicationStatus {
+public enum ApplicationStatus {
+    RECEIVED,
+    REVISION,
+    APPROVED,
+    DENIED
 }

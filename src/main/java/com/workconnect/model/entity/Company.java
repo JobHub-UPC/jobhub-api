@@ -2,7 +2,7 @@ package com.workconnect.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -11,21 +11,30 @@ public class Company {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id_user")
-    private int id;
+    @Column(name = "id_company")
+    private Integer idCompany;
 
-    @Column(name = "company_na", nullable = false, length = 50)
+    @Column(name = "company_name", length = 100, nullable = false)
     private String companyName;
 
-    @Column(name = "website", length = 50)
+    @Column(name = "website", length = 100)
     private String website;
 
-    @Column(name = "description", columnDefinition = "text")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "country", length = 50)
+    @Column(name = "country", length = 50, nullable = false)
     private String country;
 
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Job> jobs;
+    @Column(name = "email", length = 100, nullable = false)
+    private String email;
 
+    @Column(name = "phone", length = 20)
+    private String phone;
+
+    @OneToMany(mappedBy = "company")
+    private Set<Job> jobs;
+
+    @OneToMany(mappedBy = "company")
+    private Set<Application> applications;
+}

@@ -7,7 +7,7 @@ import java.time.LocalDate;
 @Data
 @Entity
 @Table(name = "members")
-public class Members {
+public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class Members {
             foreignKey = @ForeignKey(name = "FK_members_group"))
     private Group group;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id",
             foreignKey = @ForeignKey(name = "FK_members_user"))
     private User user;
