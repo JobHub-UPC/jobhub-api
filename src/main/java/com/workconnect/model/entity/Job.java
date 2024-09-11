@@ -37,14 +37,14 @@ public class Job {
     private Float salary;
 
     @JsonIgnore
-    // Muchos trabajos se ascocian a una sola empresa
-    @ManyToOne
-    @JoinColumn(name = "company_id", referencedColumnName = "id",
-                foreignKey = @ForeignKey(name = "FK_jobs_company"))
-    private Company company;
 
     // Para cerrar la bidirecionalidad en una relación de composición
     // En un trabajo, hay muchas aplicacione
     @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
     private List<Application> applications;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id", referencedColumnName = "user_id",
+            foreignKey = @ForeignKey(name = "FK_job_companies"))
+    private Company company;
 }
