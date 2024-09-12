@@ -5,12 +5,18 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "applicant_qualification")
+@Table(name = "applicant_qualifications")
 public class ApplicantQualification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
+    @Column
     private Integer level;
+
+
+    @OneToOne
+    @JoinColumn(name = "followupapplication_id",referencedColumnName = "id",
+    foreignKey = @ForeignKey(name = "fk_applicantqualification_follow"))
+    private FollowUpApplication followUpApplication;
 }

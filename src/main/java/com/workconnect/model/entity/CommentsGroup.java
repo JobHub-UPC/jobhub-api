@@ -1,6 +1,5 @@
 package com.workconnect.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -8,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "comments_group")
+@Table(name = "comments_groups")
 public class CommentsGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,5 +28,5 @@ public class CommentsGroup {
     @ManyToOne
     @JoinColumn(name = "member_id", referencedColumnName = "id",
                 foreignKey = @ForeignKey(name = "FK_comments_member"))
-    private Members members;
+    private Member member;
 }

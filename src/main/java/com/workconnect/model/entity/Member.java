@@ -9,10 +9,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "members")
 //@IdClass(MembersPK.class)
-public class Members {
-    @Id
-    private Integer username;
-
+public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -23,7 +20,7 @@ public class Members {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "comunity_id", referencedColumnName = "id",
+    @JoinColumn(name = "community_id", referencedColumnName = "id",
             foreignKey = @ForeignKey(name = "fk_members_user"))
     private Community comunity;
 
@@ -34,8 +31,4 @@ public class Members {
     @Column(name = "join_date")
     private LocalDateTime joinDate;
 
-    @ManyToOne
-    @JoinColumn(name = "community_id", referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "FK_members_group"))
-    private Community community;
 }

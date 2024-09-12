@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name =  "job")
+@Table(name =  "jobs")
 public class Job {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,12 +37,6 @@ public class Job {
     private Float salary;
 
     @JsonIgnore
-
-    // Para cerrar la bidirecionalidad en una relación de composición
-    // En un trabajo, hay muchas aplicacione
-    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
-    private List<Application> applications;
-
     @ManyToOne
     @JoinColumn(name = "company_id", referencedColumnName = "id",
             foreignKey = @ForeignKey(name = "FK_job_companies"))
