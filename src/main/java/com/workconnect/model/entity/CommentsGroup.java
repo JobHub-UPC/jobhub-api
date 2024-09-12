@@ -27,7 +27,7 @@ public class CommentsGroup {
 
     //Muchos comentarios se asocian a una persona
     @ManyToOne
-    @JoinColumn(name = "member_id", referencedColumnName = "user_id",
+    @JoinColumn(name = "member_id", referencedColumnName = "id",
                 foreignKey = @ForeignKey(name = "FK_comments_member"))
     private Members members;
 }

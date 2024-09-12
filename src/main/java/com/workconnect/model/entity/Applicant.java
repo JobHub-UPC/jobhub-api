@@ -5,12 +5,13 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "applicant")
-@IdClass(ApplicantPK.class)
+@Table(name = "applicants")
+//@IdClass(ApplicantPK.class)
 public class Applicant {
-    //PK compuesta
+
     @Id
-    private Integer user;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
@@ -35,4 +36,8 @@ public class Applicant {
 
     @Column(name = "college", nullable = false, length = 50)
     private String college;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="user_id", referencedColumnName = "id")
+    private User user;
 }

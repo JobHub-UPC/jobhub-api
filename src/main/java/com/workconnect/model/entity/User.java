@@ -1,6 +1,5 @@
 package com.workconnect.model.entity;
 
-import com.workconnect.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -8,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -28,12 +28,12 @@ public class Application {
 
     // Muchas aplicaciones se asocian a una sola empresa
     @ManyToOne
-    @JoinColumn(name = "company_id", referencedColumnName = "user_id",
+    @JoinColumn(name = "company_id", referencedColumnName = "id",
                     foreignKey = @ForeignKey(name = "FK_company_applications"))
     private Company company;
 
     @ManyToOne
-    @JoinColumn(name = "applicant_id", referencedColumnName = "user_id",
+    @JoinColumn(name = "applicant_id", referencedColumnName = "id",
                 foreignKey = @ForeignKey(name = "FK_applicant_application"))
     private Applicant applicant;
 

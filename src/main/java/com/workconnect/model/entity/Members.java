@@ -8,13 +8,24 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "members")
-@IdClass(MembersPK.class)
+//@IdClass(MembersPK.class)
 public class Members {
     @Id
-    private Integer user;
+    private Integer username;
 
-    //@EmbeddedId
-    //private MembersPK id;  // Usa la clase ApplicantPK como clave primaria
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "fk_members_user"))
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "comunity_id", referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "fk_members_user"))
+    private Community comunity;
 
 
     @Column(name = "is_admin")
@@ -24,7 +35,7 @@ public class Members {
     private LocalDateTime joinDate;
 
     @ManyToOne
-    @JoinColumn(name = "group_id", referencedColumnName = "id",
+    @JoinColumn(name = "community_id", referencedColumnName = "id",
             foreignKey = @ForeignKey(name = "FK_members_group"))
-    private Group group;
+    private Community community;
 }

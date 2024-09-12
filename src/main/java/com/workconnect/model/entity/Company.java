@@ -6,11 +6,11 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "company")
-@IdClass(CompanyPK.class)
+//@IdClass(CompanyPK.class)
 public class Company {
 
     @Id
-    private Integer user;
+    private Integer id;
 
     @Column(name = "name", nullable = false, unique = true)
     private String name;
@@ -29,5 +29,11 @@ public class Company {
 
     @Column(columnDefinition = "TEXT")
     private String description;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id",
+                foreignKey = @ForeignKey(name = "fk_company_user"))
+    private User user;
+
 
 }

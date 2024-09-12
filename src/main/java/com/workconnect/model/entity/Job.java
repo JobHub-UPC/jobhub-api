@@ -44,7 +44,7 @@ public class Job {
     private List<Application> applications;
 
     @ManyToOne
-    @JoinColumn(name = "company_id", referencedColumnName = "user_id",
+    @JoinColumn(name = "company_id", referencedColumnName = "id",
             foreignKey = @ForeignKey(name = "FK_job_companies"))
     private Company company;
 }
