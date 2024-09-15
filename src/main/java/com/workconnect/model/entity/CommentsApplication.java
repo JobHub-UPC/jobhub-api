@@ -17,10 +17,14 @@ public class CommentsApplication {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String comment;
 
-    @Column(nullable = false)
-    private String author;
 
     private LocalDateTime created;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id",referencedColumnName = "id",
+    foreignKey = @ForeignKey(name = "Fk_comments_application_id"))
+    private User user;
+
 
     @JsonIgnore
 
