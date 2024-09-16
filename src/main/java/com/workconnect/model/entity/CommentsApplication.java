@@ -17,7 +17,7 @@ public class CommentsApplication {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String comment;
 
-
+    @Column(name = "created")
     private LocalDateTime created;
 
     @ManyToOne
