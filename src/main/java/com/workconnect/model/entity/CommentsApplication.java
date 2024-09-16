@@ -31,6 +31,6 @@ public class CommentsApplication {
     // Muchos comentarios se asocian a una aplicación
     @ManyToOne
     @JoinColumn(name = "application_id", referencedColumnName = "id",
-                foreignKey = @ForeignKey(name = "FK_comments_application"))
+            foreignKey = @ForeignKey(name = "FK_comments_application"))
     private Application application;
 }
