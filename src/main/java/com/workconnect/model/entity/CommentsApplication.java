@@ -17,16 +17,20 @@ public class CommentsApplication {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String comment;
 
-    @Column(nullable = false)
-    private String author;
 
     private LocalDateTime created;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id",referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "Fk_comments_application_id"))
+    private User user;
+
 
     @JsonIgnore
 
     // Muchos comentarios se asocian a una aplicación
     @ManyToOne
     @JoinColumn(name = "application_id", referencedColumnName = "id",
-                foreignKey = @ForeignKey(name = "FK_comments_application"))
+            foreignKey = @ForeignKey(name = "FK_comments_application"))
     private Application application;
 }
