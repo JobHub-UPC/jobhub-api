@@ -22,7 +22,7 @@ public class CommentsApplication {
 
     @ManyToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "Fk_comments_application_id"))
+    foreignKey = @ForeignKey(name = "Fk_comments_application_id"))
     private User user;
 
 
