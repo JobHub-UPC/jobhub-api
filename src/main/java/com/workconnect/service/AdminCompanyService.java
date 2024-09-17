@@ -3,10 +3,9 @@ package com.workconnect.service;
 import com.workconnect.model.entity.Company;
 import jdk.jfr.Category;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.awt.print.Pageable;
 import java.util.List;
-
 
 public interface AdminCompanyService  {
     List<Company> getAll();
