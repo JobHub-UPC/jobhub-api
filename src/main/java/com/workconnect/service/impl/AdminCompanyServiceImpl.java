@@ -47,11 +47,9 @@ public class AdminCompanyServiceImpl implements AdminCompanyService {
     @Override
     public Company update(Integer id, Company updateCompany) {
         Company companyFromDb = findById(id);
-        companyFromDb.setName(updateCompany.getName());
+        companyFromDb.setCompanyName(updateCompany.getCompanyName());
         companyFromDb.setDescription(updateCompany.getDescription());
         companyFromDb.setCountry(updateCompany.getCountry());
-        companyFromDb.setEmail(updateCompany.getEmail());
-        companyFromDb.setPhone(updateCompany.getPhone());
         companyFromDb.setWebsite(updateCompany.getWebsite());
         return companyRepository.save(companyFromDb);
     }
