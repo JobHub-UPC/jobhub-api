@@ -5,13 +5,12 @@ import com.workconnect.repository.CompanyRepository;
 import com.workconnect.service.AdminCompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.print.Pageable;
 import java.time.LocalDateTime;
 import java.util.List;
-
 
 @RequiredArgsConstructor
 @Service
@@ -27,7 +26,7 @@ public class AdminCompanyServiceImpl implements AdminCompanyService {
     @Transactional(readOnly = true)
     @Override
     public Page<Company> paginate(Pageable pageable) {
-        return companyRepository.findAll(pageable);
+        return null;
     }
 
     @Transactional(readOnly = true)
@@ -43,23 +42,13 @@ public class AdminCompanyServiceImpl implements AdminCompanyService {
         return companyRepository.save(company);
     }
 
-    @Transactional
     @Override
     public Company update(Integer id, Company updateCompany) {
-        Company companyFromDb = findById(id);
-        companyFromDb.setName(updateCompany.getName());
-        companyFromDb.setDescription(updateCompany.getDescription());
-        companyFromDb.setCountry(updateCompany.getCountry());
-        companyFromDb.setEmail(updateCompany.getEmail());
-        companyFromDb.setPhone(updateCompany.getPhone());
-        companyFromDb.setWebsite(updateCompany.getWebsite());
-        return companyRepository.save(companyFromDb);
+        return null;
     }
 
-    @Transactional
     @Override
     public void delete(Integer id) {
-        Company company = findById(id);
-        companyRepository.delete(company);
+
     }
 }
