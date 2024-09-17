@@ -50,7 +50,7 @@ public class AdminJobController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Job> delete(@PathVariable Integer id) {
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
         adminJobService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
