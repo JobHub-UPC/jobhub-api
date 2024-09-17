@@ -50,7 +50,7 @@ public class ApplicantController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Applicant> deleteApplicant(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteApplicant(@PathVariable Integer id) {
         applicantService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
