@@ -10,6 +10,7 @@ import lombok.Data;
 public class Company {
 
     @Id
+
     private Integer id;
 
     @Column(name = "name", nullable = false, unique = true)

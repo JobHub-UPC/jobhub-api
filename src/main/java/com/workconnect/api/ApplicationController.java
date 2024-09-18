@@ -24,7 +24,7 @@ public class ApplicationController {
         return new ResponseEntity<>(applications, HttpStatus.OK);
     }
 
-    @GetMapping("/paginate")
+    @GetMapping("/page")
     public ResponseEntity<Page<Application>> paginate(
             @PageableDefault(size = 5, sort = "dateCreated") Pageable pageable) {
         Page<Application> page = applicationService.paginate(pageable);

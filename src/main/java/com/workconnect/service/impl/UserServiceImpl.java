@@ -17,11 +17,18 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User registerUser(User user) {
-        if (userRepository.existByEmail(user.getEmail())) {
+        if (userRepository.existsByEmail(user.getEmail())) {
             throw new RuntimeException("E-mail already exists");
         }
 
         user.setCreated(LocalDateTime.now());
         return userRepository.save(user);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public User findById(Integer id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }

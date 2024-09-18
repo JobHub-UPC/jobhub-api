@@ -9,8 +9,8 @@ import java.util.List;
 public interface ApplicationService {
     List<Application> getAll();
     Page<Application> paginate(Pageable pageable);
-    Application findById(Integer id);
     Application create(Application application);
+    Application findById(Integer id);
     Application update(Integer id, Application updateApplication);
     void delete(Integer id);
 }
