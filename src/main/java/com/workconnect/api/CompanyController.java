@@ -27,7 +27,7 @@ public class CompanyController {
     }
 
     @GetMapping("/page")
-    public ResponseEntity<Page<Company>> paginate(@PageableDefault(size = 5, sort = "companyName") Pageable pageable){
+    public ResponseEntity<Page<Company>> paginate(@PageableDefault(size = 5, sort = "name") Pageable pageable){
         Page<Company> page = adminCompanyService.paginate(pageable);
         return new ResponseEntity<>(page, HttpStatus.OK);
     }

@@ -41,7 +41,7 @@ public class AdminCommentsApplicationController {
         CommentsApplication createdCommentsApplication=adminCommentsApplicationService.create(commentsApplication);
         return new ResponseEntity<>(createdCommentsApplication,HttpStatus.CREATED);}
 
-    @PutMapping("{/id}")
+    @PutMapping("/{id}")
     public ResponseEntity<CommentsApplication> update(@PathVariable Integer id,@RequestBody CommentsApplication commentsApplication){
         CommentsApplication updatedCommentsApplication=adminCommentsApplicationService.update(id,commentsApplication);
         return new ResponseEntity<>(updatedCommentsApplication,HttpStatus.OK);
