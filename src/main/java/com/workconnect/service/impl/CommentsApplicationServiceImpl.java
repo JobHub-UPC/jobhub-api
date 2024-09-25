@@ -4,7 +4,7 @@ import com.workconnect.model.entity.Application;
 import com.workconnect.model.entity.CommentsApplication;
 import com.workconnect.repository.ApplicationRepository;
 import com.workconnect.repository.CommentsApplicationRepository;
-import com.workconnect.service.AdminCommentsApplicationService;
+import com.workconnect.service.CommentsApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class AdminCommentsApplicationServiceImpl implements AdminCommentsApplicationService {
+public class CommentsApplicationServiceImpl implements CommentsApplicationService {
     private final CommentsApplicationRepository commentsApplicationRepository;
     private final ApplicationRepository applicationRepository;
 

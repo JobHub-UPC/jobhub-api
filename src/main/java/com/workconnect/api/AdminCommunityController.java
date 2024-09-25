@@ -1,5 +1,6 @@
 package com.workconnect.api;
 
+import com.workconnect.dto.CommunityDTO;
 import com.workconnect.model.entity.Community;
 import com.workconnect.service.AdminCommunityService;
 import lombok.RequiredArgsConstructor;
@@ -19,33 +20,33 @@ public class AdminCommunityController {
     private final AdminCommunityService adminCommunityService;
 
     @GetMapping
-    public ResponseEntity<List<Community>> listAll(){
-        List<Community> communities=adminCommunityService.getAll();
+    public ResponseEntity<List<CommunityDTO>> listAll(){
+        List<CommunityDTO> communities=adminCommunityService.getAll();
         return new ResponseEntity<>(communities, HttpStatus.OK);
     }
 
     @GetMapping("/page")
-    public ResponseEntity<Page<Community>> paginate(@PageableDefault(size = 5,sort = "name")Pageable pageable){
-        Page<Community> page=adminCommunityService.paginate(pageable);
+    public ResponseEntity<Page<CommunityDTO>> paginate(@PageableDefault(size = 5,sort = "name")Pageable pageable){
+        Page<CommunityDTO> page=adminCommunityService.paginate(pageable);
         return new ResponseEntity<>(page,HttpStatus.OK);
     }
 
 
     @PostMapping
-    public ResponseEntity<Community> create(@RequestBody Community community){
-        Community createdCommunity=adminCommunityService.create(community);
+    public ResponseEntity<CommunityDTO> create(@RequestBody CommunityDTO community){
+        CommunityDTO createdCommunity=adminCommunityService.create(community);
         return new ResponseEntity<>(createdCommunity,HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Community> findById(@PathVariable Integer id){
-        Community community=adminCommunityService.findById(id);
+    public ResponseEntity<CommunityDTO> findById(@PathVariable Integer id){
+        CommunityDTO community=adminCommunityService.findById(id);
         return new ResponseEntity<>(community,HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Community> update(@PathVariable Integer id,@RequestBody Community community){
-        Community updatedCommunity=adminCommunityService.update(id,community);
+    public ResponseEntity<CommunityDTO> update(@PathVariable Integer id,@RequestBody CommunityDTO community){
+        CommunityDTO updatedCommunity=adminCommunityService.update(id,community);
         return new ResponseEntity<>(updatedCommunity,HttpStatus.OK);
     }
 

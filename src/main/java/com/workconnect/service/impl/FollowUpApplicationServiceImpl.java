@@ -7,7 +7,7 @@ import com.workconnect.model.entity.JobPhase;
 import com.workconnect.repository.ApplicationRepository;
 import com.workconnect.repository.FollowUpApplicationRepository;
 import com.workconnect.repository.JobPhaseRepository;
-import com.workconnect.service.AdminFollowUpApplicationService;
+import com.workconnect.service.FollowUpApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +18,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class AdminFollowUpApplicationServiceImpl implements AdminFollowUpApplicationService {
+public class FollowUpApplicationServiceImpl implements FollowUpApplicationService {
     private final FollowUpApplicationRepository followUpApplicationRepository;
     private final JobPhaseRepository jobPhaseRepository;
     private final ApplicationRepository applicationRepository;

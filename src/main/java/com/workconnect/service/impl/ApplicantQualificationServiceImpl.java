@@ -4,7 +4,7 @@ import com.workconnect.model.entity.ApplicantQualification;
 import com.workconnect.model.entity.FollowUpApplication;
 import com.workconnect.repository.ApplicantQualificationRepository;
 import com.workconnect.repository.FollowUpApplicationRepository;
-import com.workconnect.service.AdminApplicantQualificationService;
+import com.workconnect.service.ApplicantQualificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class AdminApplicantQualificationServiceImpl implements AdminApplicantQualificationService {
+public class ApplicantQualificationServiceImpl implements ApplicantQualificationService {
     private final ApplicantQualificationRepository applicantQualificationRepository;
     private final FollowUpApplicationRepository followUpApplicationRepository;
 

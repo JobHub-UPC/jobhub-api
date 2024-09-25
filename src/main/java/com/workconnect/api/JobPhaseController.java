@@ -1,7 +1,7 @@
 package com.workconnect.api;
 
 import com.workconnect.model.entity.JobPhase;
-import com.workconnect.service.AdminJobPhaseService;
+import com.workconnect.service.JobPhaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,43 +15,43 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/jobphases")
 @RequiredArgsConstructor
-public class AdminJobPhaseController {
-    private final AdminJobPhaseService adminJobPhaseService;
+public class JobPhaseController {
+    private final JobPhaseService jobPhaseService;
 
     @GetMapping
     public ResponseEntity<List<JobPhase>> listAll() {
-        List<JobPhase> jobPhases = adminJobPhaseService.getAll();
+        List<JobPhase> jobPhases = jobPhaseService.getAll();
         return new ResponseEntity<>(jobPhases, HttpStatus.OK);
     }
 
     @GetMapping("/page")
     public ResponseEntity<Page<JobPhase>> paginate(@PageableDefault(size = 5, sort = "firstName")
                                                  Pageable pageable) {
-        Page<JobPhase> page = adminJobPhaseService.paginate(pageable);
+        Page<JobPhase> page = jobPhaseService.paginate(pageable);
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<JobPhase> create(@RequestBody JobPhase jobPhase) {
-        JobPhase createdJobPhase = adminJobPhaseService.create(jobPhase);
+        JobPhase createdJobPhase = jobPhaseService.create(jobPhase);
         return new ResponseEntity<>(createdJobPhase, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<JobPhase> getById(@PathVariable Integer id) {
-        JobPhase jobPhase = adminJobPhaseService.findById(id);
+        JobPhase jobPhase = jobPhaseService.findById(id);
         return new ResponseEntity<>(jobPhase, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<JobPhase> update(@PathVariable Integer id, @RequestBody JobPhase jobPhase) {
-        JobPhase updatedJobPhase = adminJobPhaseService.update(id, jobPhase);
+        JobPhase updatedJobPhase = jobPhaseService.update(id, jobPhase);
         return new ResponseEntity<>(updatedJobPhase, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        adminJobPhaseService.delete(id);
+        jobPhaseService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

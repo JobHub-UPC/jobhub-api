@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-public interface AdminFollowUpApplicationService {
+public interface FollowUpApplicationService {
     List<FollowUpApplication> getAll();
     Page<FollowUpApplication> paginate(Pageable pageable);
     FollowUpApplication findById(Integer id);

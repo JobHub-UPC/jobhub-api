@@ -1,5 +1,8 @@
 package com.workconnect.service.impl;
 
+import com.workconnect.dto.CommunityDTO;
+import com.workconnect.exception.ResourceNotFoundException;
+import com.workconnect.mapper.CommunityMapper;
 import com.workconnect.model.entity.Community;
 import com.workconnect.repository.CommunityRepository;
 import com.workconnect.service.AdminCommunityService;
@@ -9,49 +12,65 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
 @RequiredArgsConstructor
 @Service
 public class AdminCommunityServiceImpl implements AdminCommunityService {
-
+    private final CommunityMapper communityMapper;
     private final CommunityRepository communityRepository;
 
     @Transactional(readOnly = true)
     @Override
-    public List<Community>getAll(){return communityRepository.findAll();}
+    public List<CommunityDTO>getAll(){
+        List<Community> communities=communityRepository.findAll();
+        return communities.stream().map(communityMapper::toDTO).toList();
+    }
 
     @Transactional(readOnly = true)
     @Override
-    public Page<Community> paginate(Pageable pageable){return communityRepository.findAll(pageable);}
-
+    public Page<CommunityDTO> paginate(Pageable pageable) {
+        Page<Community> communities = communityRepository.findAll(pageable);
+        return communities.map(communityMapper::toDTO);
+    }
     @Transactional(readOnly = true)
     @Override
-    public Community findById(Integer id){
-        return communityRepository.findById(id).orElseThrow(()->new RuntimeException("Community not founded"));
+    public CommunityDTO findById(Integer id) {
+        Community community = communityRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("El autor con ID "+id+" no fue encontrado"));
+        return communityMapper.toDTO(community);
     }
 
     @Transactional
     @Override
-    public Community create(Community community){return communityRepository.save(community);}
-
+    public CommunityDTO create(CommunityDTO communityDTO) {
+        Community community = communityMapper.toEntity(communityDTO);
+        community.setCreatedDate(LocalDateTime.now());
+        community = communityRepository.save(community);
+        return communityMapper.toDTO(community);
+    }
     @Transactional
     @Override
-    public Community update(Integer id, Community updatedCommunity){
-        Community communityFromDb=findById(id);
-        communityFromDb.setName(updatedCommunity.getName());
-        communityFromDb.setDescription(updatedCommunity.getDescription());
-        communityFromDb.setCreatedDate(updatedCommunity.getCreatedDate());
-        communityFromDb.setIsPrivate(updatedCommunity.getIsPrivate());
-        communityFromDb.setMembersCount(updatedCommunity.getMembersCount());
-        return communityRepository.save(communityFromDb);
+    public CommunityDTO update(Integer id, CommunityDTO updatedCommunityDTO){
+        Community communityFromDb = communityRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("El autor con ID " + id + " no fue encontrado"));
+
+
+        // Actualizar los campos
+        communityFromDb.setName(updatedCommunityDTO.getName());
+        communityFromDb.setDescription(updatedCommunityDTO.getDescription());
+        communityFromDb.setIsPrivate(updatedCommunityDTO.getIsPrivate());
+
+        communityFromDb = communityRepository.save(communityFromDb);
+        return communityMapper.toDTO(communityFromDb);
     }
 
     @Transactional
     @Override
     public void delete(Integer id){
-        Community community=findById(id);
+        Community community=communityRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("El grupo con ID " + id + " no fue encontrado"));
         communityRepository.delete(community);
     }
 }

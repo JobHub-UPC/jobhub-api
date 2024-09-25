@@ -5,7 +5,7 @@ import com.workconnect.model.entity.Job;
 import com.workconnect.model.entity.JobPhase;
 import com.workconnect.repository.JobPhaseRepository;
 import com.workconnect.repository.JobRepository;
-import com.workconnect.service.AdminJobPhaseService;
+import com.workconnect.service.JobPhaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +16,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class AdminJobPhaseServiceImpl implements AdminJobPhaseService {
+public class JobPhaseServiceImpl implements JobPhaseService {
     private final JobPhaseRepository jobPhaseRepository;
     private final JobRepository jobRepository;
 
