@@ -1,18 +1,17 @@
 package com.workconnect.service;
 
-import com.workconnect.model.entity.Company;
-import jdk.jfr.Category;
+import com.workconnect.dto.CompanyDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface AdminCompanyService  {
-    List<Company> getAll();
-    Page<Company> paginate(Pageable pageable);
-    Company findById(Integer id);
-    Company create(Company company);
-    Company update(Integer id, Company updateCompany);
+    List<CompanyDTO> getAll();
+    Page<CompanyDTO> paginate(Pageable pageable);
+    CompanyDTO findById(Integer id);
+    CompanyDTO create(CompanyDTO companyDTO);
+    CompanyDTO update(Integer id, CompanyDTO updateCompanyDTO);
     void delete(Integer id);
 
 }

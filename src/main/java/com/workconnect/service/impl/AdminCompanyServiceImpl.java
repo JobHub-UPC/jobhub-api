@@ -1,5 +1,7 @@
 package com.workconnect.service.impl;
 
+import com.workconnect.dto.CompanyDTO;
+import com.workconnect.mapper.CompanyMapper;
 import com.workconnect.model.entity.Company;
 import com.workconnect.model.entity.User;
 import com.workconnect.repository.CompanyRepository;
@@ -19,49 +21,75 @@ import java.util.List;
 public class AdminCompanyServiceImpl implements AdminCompanyService {
     private final CompanyRepository companyRepository;
     private final UserRepository userRepository;
+    private final CompanyMapper companyMapper;
 
     @Transactional(readOnly = true)
     @Override
-    public List<Company> getAll() {
-        return companyRepository.findAll();
+    public List<CompanyDTO> getAll() {
+        List<Company> companies = companyRepository.findAll();
+        return companies.stream()
+                .map(companyMapper::toDTO)
+                .toList();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Page<Company> paginate(Pageable pageable) {
-        return companyRepository.findAll(pageable);
+    public Page<CompanyDTO> paginate(Pageable pageable) {
+        Page<Company> companies = companyRepository.findAll(pageable);
+        return companies.map(companyMapper::toDTO);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Company findById(Integer id) {
-        return companyRepository.findById(id)
+    public CompanyDTO findById(Integer id) {
+        Company company =  companyRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Company not found with id: " + id));
+        return companyMapper.toDTO(company);
     }
 
     @Transactional
     @Override
-    public Company create(Company company) {
-        User user = userRepository.findById(company.getUser().getId())
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + company.getUser().getId()));
+    public CompanyDTO create(CompanyDTO companyDTO) {
+        companyRepository.findByNameAndEmail(companyDTO.getName(), companyDTO.getEmail())
+                .ifPresent(existingCompany -> {
+                    throw new RuntimeException("Company already exists");
+                });
+
+        User user = userRepository.findById(companyDTO.getId())
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + companyDTO.getId()));
+
+        Company company = companyMapper.toEntity(companyDTO);
         company.setUser(user);
-        return companyRepository.save(company);
+        company = companyRepository.save(company);
+        return companyMapper.toDTO(company);
     }
 
     @Transactional
     @Override
-    public Company update(Integer id, Company updateCompany) {
-        Company companyFromDb = findById(id);
+    public CompanyDTO update(Integer id, CompanyDTO updateCompanyDTO) {
+        Company companyFromDb = companyRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Company not found with id: " + id));
 
-        User user = userRepository.findById(updateCompany.getUser().getId())
-                        .orElseThrow(() -> new RuntimeException("User not found with id: " + updateCompany.getUser().getId()));
+        //User user = userRepository.findById(updateCompanyDTO.getUser().getId())
+        //                .orElseThrow(() -> new RuntimeException("User not found with id: " + updateCompanyDTO.getUser().getId()));
 
-        companyFromDb.setName(updateCompany.getName());
-        companyFromDb.setDescription(updateCompany.getDescription());
-        companyFromDb.setCountry(updateCompany.getCountry());
-        companyFromDb.setWebsite(updateCompany.getWebsite());
+        User user = userRepository.findById(updateCompanyDTO.getId())
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + updateCompanyDTO.getId()));
+
+        companyRepository.findByNameAndEmail(updateCompanyDTO.getName(), updateCompanyDTO.getEmail())
+                .filter(existingCompany -> !existingCompany.getId().equals(id))
+                .ifPresent(existingCompany -> {
+                    throw new RuntimeException("Company already exists");
+                });
+
+        companyFromDb.setName(updateCompanyDTO.getName());
+        companyFromDb.setDescription(updateCompanyDTO.getDescription());
+        companyFromDb.setCountry(updateCompanyDTO.getCountry());
+        companyFromDb.setWebsite(updateCompanyDTO.getWebsite());
         companyFromDb.setUser(user);
-        return companyRepository.save(companyFromDb);
+
+        companyFromDb = companyRepository.save(companyFromDb);
+        return companyMapper.toDTO(companyFromDb);
     }
 
     @Transactional
