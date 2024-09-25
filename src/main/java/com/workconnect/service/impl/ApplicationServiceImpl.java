@@ -1,7 +1,11 @@
 package com.workconnect.service.impl;
 
+import com.workconnect.model.entity.Applicant;
 import com.workconnect.model.entity.Application;
+import com.workconnect.model.entity.Job;
+import com.workconnect.repository.ApplicantRepository;
 import com.workconnect.repository.ApplicationRepository;
+import com.workconnect.repository.JobRepository;
 import com.workconnect.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,7 +19,9 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ApplicationServiceImpl implements ApplicationService {
-    private ApplicationRepository applicationRepository;
+    private final ApplicationRepository applicationRepository;
+    private final JobRepository jobRepository;
+    private final ApplicantRepository applicantRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -33,13 +39,19 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Application findById(Integer id) {
         return applicationRepository.findById(id).orElseThrow(
-                ()-> new RuntimeException("Application not founded")
+                ()-> new RuntimeException("Application not founded with id: " + id)
         );
     }
 
     @Transactional
     @Override
     public Application create(Application application) {
+
+        Job job = jobRepository.findById(application.getJob().getId()).orElseThrow(()-> new RuntimeException("Job not founded with id: " + application.getJob().getId()));
+        Applicant applicant = applicantRepository.findById(application.getApplicant().getId()).orElseThrow(()-> new RuntimeException("Applicant not found with id: " + application.getApplicant().getId()));
+
+        application.setApplicant(applicant);
+        application.setJob(job);
         return applicationRepository.save(application);
     }
 
@@ -47,16 +59,21 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Application update(Integer id, Application updateApplication) {
         Application applicationFromDb = findById(id);
-        applicationFromDb.setJob(updateApplication.getJob());
-        applicationFromDb.setApplicant(updateApplication.getApplicant());
+
+        Job job = jobRepository.findById(updateApplication.getJob().getId()).orElseThrow(()-> new RuntimeException("Job not founded with id: " + updateApplication.getJob().getId()));
+        Applicant applicant = applicantRepository.findById(updateApplication.getApplicant().getId()).orElseThrow(()-> new RuntimeException("Applicant not found with id: " + updateApplication.getApplicant().getId()));
+
         applicationFromDb.setDateCreated(LocalDateTime.now());
+        applicationFromDb.setApplicant(applicant);
+        applicationFromDb.setJob(job);
         return applicationRepository.save(applicationFromDb);
     }
 
     @Transactional
     @Override
     public void delete(Integer id) {
-        Application application = findById(id);
+        Application application = applicationRepository.findById(id)
+                        .orElseThrow(()-> new RuntimeException("Application not founded with id: " + id));
         applicationRepository.delete(application);
     }
 }
