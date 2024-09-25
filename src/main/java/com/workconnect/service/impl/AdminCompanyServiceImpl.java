@@ -1,6 +1,8 @@
 package com.workconnect.service.impl;
 
 import com.workconnect.dto.CompanyDTO;
+import com.workconnect.exception.BadRequestException;
+import com.workconnect.exception.ResourceNotFoundException;
 import com.workconnect.mapper.CompanyMapper;
 import com.workconnect.model.entity.Company;
 import com.workconnect.model.entity.User;
@@ -43,7 +45,7 @@ public class AdminCompanyServiceImpl implements AdminCompanyService {
     @Override
     public CompanyDTO findById(Integer id) {
         Company company =  companyRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Company not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Company not found with id: " + id));
         return companyMapper.toDTO(company);
     }
 
@@ -52,11 +54,11 @@ public class AdminCompanyServiceImpl implements AdminCompanyService {
     public CompanyDTO create(CompanyDTO companyDTO) {
         companyRepository.findByNameAndEmail(companyDTO.getName(), companyDTO.getEmail())
                 .ifPresent(existingCompany -> {
-                    throw new RuntimeException("Company already exists");
+                    throw new BadRequestException("Company already exists");
                 });
 
         User user = userRepository.findById(companyDTO.getId())
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + companyDTO.getId()));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + companyDTO.getId()));
 
         Company company = companyMapper.toEntity(companyDTO);
         company.setUser(user);
@@ -68,18 +70,18 @@ public class AdminCompanyServiceImpl implements AdminCompanyService {
     @Override
     public CompanyDTO update(Integer id, CompanyDTO updateCompanyDTO) {
         Company companyFromDb = companyRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Company not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Company not found with id: " + id));
 
         //User user = userRepository.findById(updateCompanyDTO.getUser().getId())
         //                .orElseThrow(() -> new RuntimeException("User not found with id: " + updateCompanyDTO.getUser().getId()));
 
         User user = userRepository.findById(updateCompanyDTO.getId())
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + updateCompanyDTO.getId()));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + updateCompanyDTO.getId()));
 
         companyRepository.findByNameAndEmail(updateCompanyDTO.getName(), updateCompanyDTO.getEmail())
                 .filter(existingCompany -> !existingCompany.getId().equals(id))
                 .ifPresent(existingCompany -> {
-                    throw new RuntimeException("Company already exists");
+                    throw new BadRequestException("Company already exists");
                 });
 
         companyFromDb.setName(updateCompanyDTO.getName());
@@ -96,7 +98,7 @@ public class AdminCompanyServiceImpl implements AdminCompanyService {
     @Override
     public void delete(Integer id) {
         Company company = companyRepository.findById(id)
-                        .orElseThrow(() -> new RuntimeException("Company not found with id: " + id));
+                        .orElseThrow(() -> new ResourceNotFoundException("Company not found with id: " + id));
         companyRepository.delete(company);
     }
 }

@@ -4,6 +4,7 @@ import com.workconnect.dto.CompanyDTO;
 import com.workconnect.model.entity.Company;
 import com.workconnect.repository.CompanyRepository;
 import com.workconnect.service.AdminCompanyService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +35,7 @@ public class CompanyController {
     }
 
     @PostMapping
-    public ResponseEntity<CompanyDTO> create(@RequestBody CompanyDTO companyDTO){
+    public ResponseEntity<CompanyDTO> create(@Valid @RequestBody CompanyDTO companyDTO){
         CompanyDTO createdCompany = adminCompanyService.create(companyDTO);
         return new ResponseEntity<>(createdCompany, HttpStatus.CREATED);
     }
