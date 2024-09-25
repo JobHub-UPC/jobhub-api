@@ -2,7 +2,6 @@ package com.workconnect.service;
 
 
 import com.workconnect.dto.CommunityDTO;
-import com.workconnect.model.entity.Community;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

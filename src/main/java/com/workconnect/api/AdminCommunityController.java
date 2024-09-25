@@ -1,7 +1,6 @@
 package com.workconnect.api;
 
 import com.workconnect.dto.CommunityDTO;
-import com.workconnect.model.entity.Community;
 import com.workconnect.service.AdminCommunityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
