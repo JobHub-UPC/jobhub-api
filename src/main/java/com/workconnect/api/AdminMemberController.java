@@ -1,7 +1,9 @@
 package com.workconnect.api;
 
+import com.workconnect.dto.MemberDTO;
 import com.workconnect.model.entity.Member;
 import com.workconnect.service.AdminMemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,32 +21,32 @@ public class AdminMemberController {
     private final AdminMemberService adminMemberService;
 
     @GetMapping
-    public ResponseEntity<List<Member>> listAll() {
-        List<Member> members = adminMemberService.getAll();
+    public ResponseEntity<List<MemberDTO>> listAll() {
+        List<MemberDTO> members = adminMemberService.getAll();
         return new ResponseEntity<>(members, HttpStatus.OK);
     }
 
     @GetMapping("/page")
-    public ResponseEntity<Page<Member>> paginate(@PageableDefault(size = 5, sort = "id")Pageable pageable) {
-        Page<Member> page = adminMemberService.paginate(pageable);
+    public ResponseEntity<Page<MemberDTO>> paginate(@PageableDefault(size = 5, sort = "id")Pageable pageable) {
+        Page<MemberDTO> page = adminMemberService.paginate(pageable);
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Member> create(@RequestBody Member member) {
-        Member createMember = adminMemberService.create(member);
+    public ResponseEntity<MemberDTO> create(@Valid @RequestBody MemberDTO memberDTO) {
+        MemberDTO createMember = adminMemberService.create(memberDTO);
         return new ResponseEntity<>(createMember, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Member> getMemberById(@PathVariable Integer id) {
-        Member member = adminMemberService.findById(id);
+    public ResponseEntity<MemberDTO> getMemberById(@PathVariable Integer id) {
+        MemberDTO member = adminMemberService.findById(id);
         return new ResponseEntity<>(member, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Member> updateMember(@PathVariable Integer id, @RequestBody Member member) {
-        Member updateMember = adminMemberService.update(id, member);
+    public ResponseEntity<MemberDTO> updateMember(@PathVariable Integer id, @RequestBody MemberDTO memberDTO) {
+        MemberDTO updateMember = adminMemberService.update(id, memberDTO);
         return new ResponseEntity<>(updateMember, HttpStatus.OK);
     }
 

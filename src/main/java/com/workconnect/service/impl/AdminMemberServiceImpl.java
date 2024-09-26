@@ -1,5 +1,8 @@
 package com.workconnect.service.impl;
 
+import com.workconnect.dto.MemberDTO;
+import com.workconnect.exception.ResourceNotFoundException;
+import com.workconnect.mapper.MemberMapper;
 import com.workconnect.model.entity.Member;
 import com.workconnect.model.entity.User;
 import com.workconnect.repository.MemberRepository;
@@ -20,49 +23,60 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 
     public final MemberRepository memberRepository;
     public final UserRepository userRepository;
+    public final MemberMapper memberMapper;
 
     @Transactional(readOnly = true)
     @Override
-    public List<Member> getAll() {
-        return memberRepository.findAll();
+    public List<MemberDTO> getAll() {
+        List<Member> members = memberRepository.findAll();
+        return members.stream()
+                .map(memberMapper::toDTO)
+                .toList();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Page<Member> paginate(Pageable pageable) {
-        return memberRepository.findAll(pageable);
+    public Page<MemberDTO> paginate(Pageable pageable) {
+        Page<Member> members = memberRepository.findAll(pageable);
+        return members.map(memberMapper::toDTO);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Member findById(Integer id) {
-        return memberRepository.findById(id).orElseThrow(
-                ()-> new RuntimeException("Member Not founded with id: " + id)
-        );
+    public MemberDTO findById(Integer id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Member not found with id " + id));
+        return memberMapper.toDTO(member);
     }
 
     @Transactional
     @Override
-    public Member create(Member member) {
-        User user = userRepository.findById(member.getUser().getId())
-                .orElseThrow(()-> new RuntimeException("User not found with id: " + member.getUser().getId()));
+    public MemberDTO create(MemberDTO memberDTO) {
+
+        User user = userRepository.findById(memberDTO.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id:" + memberDTO.getId()));
+
+        Member member = memberMapper.toEntity(memberDTO);
         member.setUser(user);
-        return memberRepository.save(member);
+        member = memberRepository.save(member);
+        return memberMapper.toDTO(member);
     }
 
     @Transactional
     @Override
-    public Member update(Integer id, Member updateMember) {
-        Member memberFromDb = findById(id);
+    public MemberDTO update(Integer id, MemberDTO updateMemberDTO) {
+        Member memberFromDb = memberRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Member not found with id " + id));
 
-        User user = userRepository.findById(updateMember.getUser().getId())
-                        .orElseThrow(()-> new RuntimeException("User not found with id: " + updateMember.getUser().getId()));
+        User user = userRepository.findById(updateMemberDTO.getId())
+                        .orElseThrow(()-> new RuntimeException("User not found with id: " + updateMemberDTO.getId()));
 
-        memberFromDb.setIsAdmin(updateMember.getIsAdmin());
-        memberFromDb.setComunity(updateMember.getComunity());
+        memberFromDb.setIsAdmin(updateMemberDTO.getIsAdmin());
+        //memberFromDb.setComunity(updateMemberDTO.getCommunity());
         memberFromDb.setJoinDate(LocalDateTime.now());
         memberFromDb.setUser(user);
-        return memberRepository.save(memberFromDb);
+        memberFromDb = memberRepository.save(memberFromDb);
+        return memberMapper.toDTO(memberFromDb);
     }
 
     @Transactional

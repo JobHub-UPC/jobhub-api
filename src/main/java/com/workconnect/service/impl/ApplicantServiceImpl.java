@@ -1,5 +1,9 @@
 package com.workconnect.service.impl;
 
+import com.workconnect.dto.ApplicantDTO;
+import com.workconnect.exception.BadRequestException;
+import com.workconnect.exception.ResourceNotFoundException;
+import com.workconnect.mapper.ApplicantMapper;
 import com.workconnect.model.entity.Applicant;
 import com.workconnect.model.entity.User;
 import com.workconnect.repository.ApplicantRepository;
@@ -19,56 +23,77 @@ public class ApplicantServiceImpl implements ApplicantService {
 
     private final ApplicantRepository applicantRepository;
     private final UserRepository userRepository;
+    private final ApplicantMapper applicantMapper;
 
     @Transactional(readOnly = true)
     @Override
-    public List<Applicant> getAll() {
-        return applicantRepository.findAll();
+    public List<ApplicantDTO> getAll() {
+        List<Applicant> applicants = applicantRepository.findAll();
+        return applicants.stream()
+                .map(applicantMapper::toDTO)
+                .toList();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Page<Applicant> paginate(Pageable pageable) {
-        return applicantRepository.findAll(pageable);
+    public Page<ApplicantDTO> paginate(Pageable pageable) {
+        Page<Applicant> applicants = applicantRepository.findAll(pageable);
+        return applicants.map(applicantMapper::toDTO);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Applicant findById(Integer id) {
-        return applicantRepository.findById(id).orElseThrow(
-                ()-> new RuntimeException("Applicant not found with id: " + id)
-        );
+    public ApplicantDTO findById(Integer id) {
+        Applicant applicant = applicantRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Applicant not found with id: " + id));
+        return applicantMapper.toDTO(applicant);
     }
 
     @Transactional
     @Override
-    public Applicant create(Applicant applicant) {
+    public ApplicantDTO create(ApplicantDTO applicantDTO) {
+        applicantRepository.findApplicantByEmail(applicantDTO.getEmail())
+                .ifPresent(existingApplicant -> {
+                    throw new BadRequestException("Applicant already exists");
+                });
+
         //Asigna el user antes de guardar
-        User user = userRepository.findById(applicant.getUser().getId())
-                .orElseThrow(() -> new RuntimeException("User not found with id:" + applicant.getUser().getId()));
+        User user = userRepository.findById(applicantDTO.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id:" + applicantDTO.getId()));
+
+        Applicant applicant = applicantMapper.toEntity(applicantDTO);
         applicant.setUser(user);
-        return applicantRepository.save(applicant);
+        applicant = applicantRepository.save(applicant);
+        return applicantMapper.toDTO(applicant);
     }
 
     @Transactional
     @Override
-    public Applicant update(Integer id, Applicant updateApplicant) {
-        Applicant applicantFromDb = findById(id); // Utiliza orElseThrow dentro de findById
+    public ApplicantDTO update(Integer id, ApplicantDTO updateApplicantDTO) {
+        Applicant applicantFromDb = applicantRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Applicant not found with id: " + id));
 
         //Asigna el user antes de actualizar
-        User user = userRepository.findById(updateApplicant.getUser().getId())
-                        .orElseThrow(() -> new RuntimeException("User not found with id: " + updateApplicant.getUser().getId()));
+        User user = userRepository.findByEmail(updateApplicantDTO.getEmail())
+                        .orElseThrow(() -> new ResourceNotFoundException("applicant not found"));
 
-        applicantFromDb.setFirstName(updateApplicant.getFirstName());
-        applicantFromDb.setLastName(updateApplicant.getLastName());
-        applicantFromDb.setDescription(updateApplicant.getDescription());
-        applicantFromDb.setEmail(updateApplicant.getEmail());
-        applicantFromDb.setPhone(updateApplicant.getPhone());
-        applicantFromDb.setCollege(updateApplicant.getCollege());
-        applicantFromDb.setDegree(updateApplicant.getDegree());
-        applicantFromDb.setCountry(updateApplicant.getCountry());
-        applicantFromDb.setUser(user);
-        return applicantRepository.save(applicantFromDb);
+        applicantRepository.findApplicantByEmail(updateApplicantDTO.getEmail())
+                        .filter(applicant -> !applicant.getEmail().equals(updateApplicantDTO.getEmail()))
+                                .ifPresent(existingApplicant -> {
+                                    throw new BadRequestException("Applicant already exists");
+                                });
+
+        applicantFromDb.setFirstName(updateApplicantDTO.getFirstName());
+        applicantFromDb.setLastName(updateApplicantDTO.getLastName());
+        applicantFromDb.setDescription(updateApplicantDTO.getDescription());
+        applicantFromDb.setEmail(updateApplicantDTO.getEmail());
+        applicantFromDb.setPhone(updateApplicantDTO.getPhone());
+        applicantFromDb.setCollege(updateApplicantDTO.getCollege());
+        applicantFromDb.setDegree(updateApplicantDTO.getDegree());
+        applicantFromDb.setCountry(updateApplicantDTO.getCountry());
+
+        applicantFromDb = applicantRepository.save(applicantFromDb);
+        return applicantMapper.toDTO(applicantFromDb);
     }
 
     @Transactional

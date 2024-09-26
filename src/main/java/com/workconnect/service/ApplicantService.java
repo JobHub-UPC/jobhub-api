@@ -1,16 +1,16 @@
 package com.workconnect.service;
 
-import com.workconnect.model.entity.Applicant;
+import com.workconnect.dto.ApplicantDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface ApplicantService {
-    List<Applicant> getAll();
-    Page<Applicant> paginate(Pageable pageable);
-    Applicant findById(Integer id);
-    Applicant create(Applicant applicant);
-    Applicant update(Integer id, Applicant updateApplicant);
+    List<ApplicantDTO> getAll();
+    Page<ApplicantDTO> paginate(Pageable pageable);
+    ApplicantDTO findById(Integer id);
+    ApplicantDTO create(ApplicantDTO applicantDTO);
+    ApplicantDTO update(Integer id, ApplicantDTO updateApplicantDTO);
     void delete(Integer id);
 }

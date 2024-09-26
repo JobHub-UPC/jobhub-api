@@ -14,7 +14,6 @@ public class ApplicantQualification {
     @Column
     private Integer level;
 
-
     @OneToOne
     @JoinColumn(name = "followupapplication_id",referencedColumnName = "id",
     foreignKey = @ForeignKey(name = "fk_applicantqualification_follow"))
