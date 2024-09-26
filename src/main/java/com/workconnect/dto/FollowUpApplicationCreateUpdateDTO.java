@@ -1,8 +1,6 @@
 package com.workconnect.dto;
 
 import com.workconnect.model.enums.ApplicationStatus;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 

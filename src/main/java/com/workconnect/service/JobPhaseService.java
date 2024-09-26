@@ -2,7 +2,7 @@ package com.workconnect.service;
 
 import com.workconnect.dto.JobPhaseCreateUpdateDTO;
 import com.workconnect.dto.JobPhaseDetailsDTO;
-import com.workconnect.model.entity.JobPhase;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

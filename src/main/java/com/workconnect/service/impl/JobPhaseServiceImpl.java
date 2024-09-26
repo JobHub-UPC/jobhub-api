@@ -5,8 +5,6 @@ import com.workconnect.dto.JobPhaseCreateUpdateDTO;
 import com.workconnect.dto.JobPhaseDetailsDTO;
 import com.workconnect.exception.ResourceNotFoundException;
 import com.workconnect.mapper.JobPhaseMapper;
-import com.workconnect.model.entity.Application;
-import com.workconnect.model.entity.FollowUpApplication;
 import com.workconnect.model.entity.Job;
 import com.workconnect.model.entity.JobPhase;
 import com.workconnect.repository.JobPhaseRepository;
@@ -18,7 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor

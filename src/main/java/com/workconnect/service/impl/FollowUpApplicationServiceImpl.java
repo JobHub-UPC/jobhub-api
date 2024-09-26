@@ -76,7 +76,6 @@ public class FollowUpApplicationServiceImpl implements FollowUpApplicationServic
         Application application1 = applicationRepository.findById(followUpApplicationCreateUpdateDTO.getApplicantId())
                 .orElseThrow(() -> new RuntimeException("Follow up Application not found with id: " + followUpApplicationCreateUpdateDTO.getApplicantId()));
 
-;
 
         followUpApplicationfromDb.setApplication(application1);
         followUpApplicationfromDb.setLastUpdate(LocalDateTime.now());

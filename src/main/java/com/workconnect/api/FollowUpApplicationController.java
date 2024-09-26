@@ -2,7 +2,6 @@ package com.workconnect.api;
 
 import com.workconnect.dto.FollowUpApplicationCreateUpdateDTO;
 import com.workconnect.dto.FollowUpApplicationDetailsDTO;
-import com.workconnect.model.entity.FollowUpApplication;
 import com.workconnect.service.FollowUpApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

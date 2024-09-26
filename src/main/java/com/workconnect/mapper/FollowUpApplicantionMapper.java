@@ -30,7 +30,6 @@ public class FollowUpApplicantionMapper {
         return modelMapper.map(followUpApplication, FollowUpApplicationCreateUpdateDTO.class);
     }
 
-    // Mapeo de Book a BookDetailsDTO (para mostrar información completa)
     public FollowUpApplicationDetailsDTO toDetailsDto(FollowUpApplication followUpApplication) {
         FollowUpApplicationDetailsDTO followUpApplicationDetailsDTO = modelMapper.map(followUpApplication, FollowUpApplicationDetailsDTO.class);
         // Mapear manualmente el nombre del autor concatenando firstName y lastName

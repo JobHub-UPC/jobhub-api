@@ -1,10 +1,8 @@
 package com.workconnect.mapper;
 
-import com.workconnect.dto.FollowUpApplicationCreateUpdateDTO;
-import com.workconnect.dto.FollowUpApplicationDetailsDTO;
+
 import com.workconnect.dto.JobPhaseCreateUpdateDTO;
 import com.workconnect.dto.JobPhaseDetailsDTO;
-import com.workconnect.model.entity.FollowUpApplication;
 import com.workconnect.model.entity.JobPhase;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;

@@ -2,7 +2,6 @@ package com.workconnect.api;
 
 import com.workconnect.dto.JobPhaseCreateUpdateDTO;
 import com.workconnect.dto.JobPhaseDetailsDTO;
-import com.workconnect.model.entity.JobPhase;
 import com.workconnect.service.JobPhaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
