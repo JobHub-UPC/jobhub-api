@@ -1,6 +1,10 @@
 package com.workconnect.service.impl;
 
 
+import com.workconnect.dto.FollowUpApplicationCreateUpdateDTO;
+import com.workconnect.dto.FollowUpApplicationDetailsDTO;
+import com.workconnect.exception.ResourceNotFoundException;
+import com.workconnect.mapper.FollowUpApplicantionMapper;
 import com.workconnect.model.entity.Application;
 import com.workconnect.model.entity.FollowUpApplication;
 import com.workconnect.model.entity.JobPhase;
@@ -14,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -22,47 +27,63 @@ public class FollowUpApplicationServiceImpl implements FollowUpApplicationServic
     private final FollowUpApplicationRepository followUpApplicationRepository;
     private final JobPhaseRepository jobPhaseRepository;
     private final ApplicationRepository applicationRepository;
+    private final FollowUpApplicantionMapper followUpApplicantionMapper;
 
     @Transactional(readOnly = true)
     @Override
-    public List<FollowUpApplication> getAll(){
-        return followUpApplicationRepository.findAll();
+    public List<FollowUpApplicationDetailsDTO> getAll() {
+        List<FollowUpApplication> followUpApplications = followUpApplicationRepository.findAll();
+        return followUpApplications.stream()
+                .map(followUpApplicantionMapper::toDetailsDTO)
+                .toList();
     }
     @Transactional(readOnly = true)
     @Override
-    public Page<FollowUpApplication> paginate(Pageable pageable){
-        return followUpApplicationRepository.findAll(pageable);
+    public Page<FollowUpApplicationDetailsDTO> paginate(Pageable pageable) {
+        Page<FollowUpApplication> followUpApplications = followUpApplicationRepository.findAll(pageable);
+        return followUpApplications.map(followUpApplicantionMapper::toDetailsDTO);
     }
     @Transactional(readOnly = true)
     @Override
-    public FollowUpApplication findById(Integer id){
-        return followUpApplicationRepository.findById(id).orElseThrow(
-                ()->new RuntimeException("Follow up Application not founded with id: " + id)
-        );
+    public FollowUpApplicationDetailsDTO findById(Integer id) {
+        FollowUpApplication followUpApplication =  followUpApplicationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Follow up Application not found with id: " + id));
+        return followUpApplicantionMapper.toDetailsDTO(followUpApplication);
     }
     @Transactional
     @Override
-    public FollowUpApplication create(FollowUpApplication createdFollowUpApplication){
-        JobPhase jobPhase = jobPhaseRepository.findById(createdFollowUpApplication.getJobphase().getId()).orElseThrow(()-> new RuntimeException("Job phase not founded with id: " + createdFollowUpApplication.getJobphase().getId()));
-        Application application = applicationRepository.findById(createdFollowUpApplication.getApplication().getId()).orElseThrow(()-> new RuntimeException("Application not founded with id: " + createdFollowUpApplication.getApplication().getId()));
+    public FollowUpApplicationDetailsDTO create(FollowUpApplicationCreateUpdateDTO followUpApplicationCreateUpdateDTO){
+        JobPhase jobPhase = jobPhaseRepository.findById(followUpApplicationCreateUpdateDTO.getJobPhaseId()).orElseThrow(()-> new RuntimeException("Job phase not founded with id: " + followUpApplicationCreateUpdateDTO.getJobPhaseId()));
+        Application application = applicationRepository.findById(followUpApplicationCreateUpdateDTO.getApplicantId()).orElseThrow(()-> new RuntimeException("Application not founded with id: " + followUpApplicationCreateUpdateDTO.getApplicantId()));
 
-        createdFollowUpApplication.setApplication(application);
-        createdFollowUpApplication.setJobphase(jobPhase);
-        return followUpApplicationRepository.save(createdFollowUpApplication);
+        FollowUpApplication followUpApplication=followUpApplicantionMapper.toEntity(followUpApplicationCreateUpdateDTO);
+        followUpApplication.setApplication(application);
+        followUpApplication.setJobphase(jobPhase);
+        followUpApplication.setStatus(followUpApplicationCreateUpdateDTO.getStatus());
+        return followUpApplicantionMapper.toDetailsDTO(followUpApplicationRepository.save(followUpApplication));
     }
 
     @Transactional
     @Override
-    public FollowUpApplication update(Integer id,FollowUpApplication updatedFollowUpApplication) {
-        FollowUpApplication followUpApplicationFromDb=findById(id);
+    public FollowUpApplicationDetailsDTO update(Integer id,FollowUpApplicationCreateUpdateDTO followUpApplicationCreateUpdateDTO) {
 
-        JobPhase jobphase = jobPhaseRepository.findById(updatedFollowUpApplication.getJobphase().getId()).orElseThrow(()-> new RuntimeException("Jobphase not founded with id: " + updatedFollowUpApplication.getJobphase().getId()));
-        Application application = applicationRepository.findById(updatedFollowUpApplication.getApplication().getId()).orElseThrow(()-> new RuntimeException("Application not founded with id: " + updatedFollowUpApplication.getApplication().getId()));
+        FollowUpApplication followUpApplicationfromDb = followUpApplicationRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Follow up Application not found with id: " + id));
 
-        followUpApplicationFromDb.setLastUpdate(updatedFollowUpApplication.getLastUpdate());
-        followUpApplicationFromDb.setApplication(application);
-        followUpApplicationFromDb.setJobphase(jobphase);
-        return followUpApplicationRepository.save(followUpApplicationFromDb);
+
+        JobPhase jobPhase = jobPhaseRepository.findById(followUpApplicationCreateUpdateDTO.getJobPhaseId())
+                .orElseThrow(() -> new RuntimeException("Follow up Application not found with id: " + followUpApplicationCreateUpdateDTO.getJobPhaseId()));
+        Application application1 = applicationRepository.findById(followUpApplicationCreateUpdateDTO.getApplicantId())
+                .orElseThrow(() -> new RuntimeException("Follow up Application not found with id: " + followUpApplicationCreateUpdateDTO.getApplicantId()));
+
+
+        followUpApplicationfromDb.setApplication(application1);
+        followUpApplicationfromDb.setLastUpdate(LocalDateTime.now());
+        followUpApplicationfromDb.setApplicationDate(application1.getDateCreated());
+        followUpApplicationfromDb.setStatus(followUpApplicationCreateUpdateDTO.getStatus());
+        followUpApplicationfromDb.setJobphase(jobPhase);
+
+        return followUpApplicantionMapper.toDetailsDTO(followUpApplicationRepository.save(followUpApplicationfromDb));
     }
 
 
