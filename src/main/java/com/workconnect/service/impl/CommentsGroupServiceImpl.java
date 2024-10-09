@@ -66,6 +66,8 @@ public class CommentsGroupServiceImpl implements CommentsGroupService {
         Member member = memberRepository.findById(updateCommentsGroup.getMemberId())
                         .orElseThrow(()-> new RuntimeException("Member Not Founded with id:" + updateCommentsGroup.getMemberId()));
         commentsGroupFromDb.setPostedDate(LocalDateTime.now());
+        commentsGroupFromDb.setContent(updateCommentsGroup.getContent());
+        commentsGroupFromDb.setLikesCount(updateCommentsGroup.getLikesCount());
         commentsGroupFromDb.setMember(member);
         return commentsGroupMapper.toDetailsDTO(commentsGroupRepository.save(commentsGroupFromDb));
     }

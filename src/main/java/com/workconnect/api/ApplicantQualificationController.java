@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/applicant-qualifications")
+@RequestMapping("/applicant-qualifications")
 @RequiredArgsConstructor
 public class ApplicantQualificationController {
     private final ApplicantQualificationService applicantQualificationService;

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/comments-group")
+@RequestMapping("/comments-group")
 @RequiredArgsConstructor
 public class CommentsGroupController {
     private final CommentsGroupService commentsGroupService;
@@ -26,7 +26,7 @@ public class CommentsGroupController {
     }
 
     @GetMapping("/page")
-    public ResponseEntity<Page<CommentsGroupDetailsDTO>> paginate(@PageableDefault(size = 5, sort = "likes_count")Pageable pageable){
+    public ResponseEntity<Page<CommentsGroupDetailsDTO>> paginate(@PageableDefault(size = 5, sort = "id")Pageable pageable){
         Page<CommentsGroupDetailsDTO> commentsGroups= commentsGroupService.paginate(pageable);
         return new ResponseEntity<>(commentsGroups,HttpStatus.OK);
     }

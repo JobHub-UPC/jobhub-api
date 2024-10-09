@@ -7,7 +7,7 @@ import lombok.Data;
 public class ApplicantQualificationCreateUpdateDTO {
     private Integer id;
     @NotBlank(message = "Qualification is mandatory")
-    private Integer qualification;
+    private Integer level;
     @NotBlank(message = "FollowUpQualification is mandatory")
     private Integer followUpApplication;
 }

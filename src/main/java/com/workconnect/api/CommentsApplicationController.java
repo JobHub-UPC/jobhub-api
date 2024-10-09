@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/comments-applications")
+@RequestMapping("/comments-applications")
 @RequiredArgsConstructor
 public class CommentsApplicationController {
     private final CommentsApplicationService commentsApplicationService;

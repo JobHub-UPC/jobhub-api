@@ -59,7 +59,8 @@ public class FollowUpApplicationServiceImpl implements FollowUpApplicationServic
         FollowUpApplication followUpApplication=followUpApplicantionMapper.toEntity(followUpApplicationCreateUpdateDTO);
         followUpApplication.setApplication(application);
         followUpApplication.setJobphase(jobPhase);
-        followUpApplication.setStatus(followUpApplicationCreateUpdateDTO.getStatus());
+        followUpApplication.setApplicationDate(application.getDateCreated());
+        followUpApplication.setLastUpdate(LocalDateTime.now());
         return followUpApplicantionMapper.toDetailsDTO(followUpApplicationRepository.save(followUpApplication));
     }
 

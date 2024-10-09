@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/follow-up-application")
+@RequestMapping("/follow-up-application")
 @RequiredArgsConstructor
 public class FollowUpApplicationController {
     private final FollowUpApplicationService followUpApplicationService;
@@ -26,7 +26,7 @@ public class FollowUpApplicationController {
     }
 
     @GetMapping("/page")
-    public ResponseEntity<Page<FollowUpApplicationDetailsDTO>> paginate(@PageableDefault(size = 5,sort = "last_update")Pageable pageable){
+    public ResponseEntity<Page<FollowUpApplicationDetailsDTO>> paginate(@PageableDefault(size = 5,sort = "id")Pageable pageable){
         Page<FollowUpApplicationDetailsDTO> page= followUpApplicationService.paginate(pageable);
         return new ResponseEntity<>(page,HttpStatus.OK);
     }

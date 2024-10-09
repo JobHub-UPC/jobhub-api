@@ -61,7 +61,7 @@ public class ApplicantQualificationServiceImpl implements ApplicantQualification
         FollowUpApplication followUpApplication = followUpApplicationRepository.findById(updateApplicantQualification.getFollowUpApplication())
                         .orElseThrow(()-> new RuntimeException("Application not founded with id: " + updateApplicantQualification.getFollowUpApplication()));
         ApplicantQualification applicantQualificationFromDb = applicantQualificationRepository.findById(id).orElseThrow(()-> new RuntimeException("Applicant Qualification not founded with id: " + id));
-        applicantQualificationFromDb.setLevel(updateApplicantQualification.getQualification())  ;
+        applicantQualificationFromDb.setLevel(updateApplicantQualification.getLevel())  ;
         applicantQualificationFromDb.setFollowUpApplication(followUpApplication);
         return applicantQualificationMapper.toDetailsDTO(applicantQualificationRepository.save(applicantQualificationFromDb));
     }

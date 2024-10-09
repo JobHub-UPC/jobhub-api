@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/jobphases")
+@RequestMapping("/jobphases")
 @RequiredArgsConstructor
 public class JobPhaseController {
     private final JobPhaseService jobPhaseService;
@@ -26,7 +26,7 @@ public class JobPhaseController {
     }
 
     @GetMapping("/page")
-    public ResponseEntity<Page<JobPhaseDetailsDTO>> paginate(@PageableDefault(size = 5, sort = "firstName")
+    public ResponseEntity<Page<JobPhaseDetailsDTO>> paginate(@PageableDefault(size = 5, sort = "Name")
                                                  Pageable pageable) {
         Page<JobPhaseDetailsDTO> page = jobPhaseService.paginate(pageable);
         return new ResponseEntity<>(page, HttpStatus.OK);
