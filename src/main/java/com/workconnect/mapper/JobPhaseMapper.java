@@ -16,9 +16,7 @@ public class JobPhaseMapper {
     }
     public JobPhaseDetailsDTO toDetailsDTO(JobPhase jobPhase) {
         JobPhaseDetailsDTO jobPhaseDetailsDTO =  modelMapper.map(jobPhase, JobPhaseDetailsDTO.class);
-
         jobPhaseDetailsDTO.setJobName(jobPhase.getJob().getTitle());
-
         return jobPhaseDetailsDTO;
     }
 
@@ -28,13 +26,6 @@ public class JobPhaseMapper {
 
     public JobPhaseCreateUpdateDTO toCreateUpdateDTO(JobPhase jobPhase) {
         return modelMapper.map(jobPhase, JobPhaseCreateUpdateDTO.class);
-    }
-
-    // Mapeo de Book a BookDetailsDTO (para mostrar información completa)
-    public JobPhaseDetailsDTO toDetailsDto(JobPhase jobPhase) {
-        JobPhaseDetailsDTO jobPhaseDetailsDTO = modelMapper.map(jobPhase, JobPhaseDetailsDTO.class);
-        jobPhaseDetailsDTO.setJobName(jobPhase.getJob().getTitle());
-        return jobPhaseDetailsDTO;
     }
 
 }

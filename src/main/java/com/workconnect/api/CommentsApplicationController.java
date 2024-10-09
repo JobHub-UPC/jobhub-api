@@ -1,5 +1,7 @@
 package com.workconnect.api;
 
+import com.workconnect.dto.CommentsApplicationCreateUpdateDTO;
+import com.workconnect.dto.CommentsApplicationDetailsDTO;
 import com.workconnect.model.entity.CommentsApplication;
 import com.workconnect.service.CommentsApplicationService;
 import lombok.RequiredArgsConstructor;
@@ -19,31 +21,31 @@ public class CommentsApplicationController {
     private final CommentsApplicationService commentsApplicationService;
 
     @GetMapping
-    public ResponseEntity<List<CommentsApplication>> listAll(){
-        List<CommentsApplication> commentsApplications= commentsApplicationService.getAll();
+    public ResponseEntity<List<CommentsApplicationDetailsDTO>> listAll(){
+        List<CommentsApplicationDetailsDTO> commentsApplications= commentsApplicationService.getAll();
         return new ResponseEntity<>(commentsApplications, HttpStatus.OK);
     }
 
     @GetMapping("/page")
-    public ResponseEntity<Page<CommentsApplication>> paginate(@PageableDefault(size = 5,sort = "created") Pageable pageable){
-        Page<CommentsApplication> page= commentsApplicationService.paginate(pageable);
+    public ResponseEntity<Page<CommentsApplicationDetailsDTO>> paginate(@PageableDefault(size = 5,sort = "created") Pageable pageable){
+        Page<CommentsApplicationDetailsDTO> page= commentsApplicationService.paginate(pageable);
         return new ResponseEntity<>(page,HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CommentsApplication> findById(@PathVariable Integer id){
-        CommentsApplication commentsApplication= commentsApplicationService.findById(id);
+    public ResponseEntity<CommentsApplicationDetailsDTO> findById(@PathVariable Integer id){
+        CommentsApplicationDetailsDTO commentsApplication= commentsApplicationService.findById(id);
         return new ResponseEntity<>(commentsApplication,HttpStatus.OK);
 
     }
     @PostMapping
-    public ResponseEntity<CommentsApplication> create(@RequestBody CommentsApplication commentsApplication){
-        CommentsApplication createdCommentsApplication= commentsApplicationService.create(commentsApplication);
+    public ResponseEntity<CommentsApplicationDetailsDTO> create(@RequestBody CommentsApplicationCreateUpdateDTO commentsApplication){
+        CommentsApplicationDetailsDTO createdCommentsApplication= commentsApplicationService.create(commentsApplication);
         return new ResponseEntity<>(createdCommentsApplication,HttpStatus.CREATED);}
 
     @PutMapping("/{id}")
-    public ResponseEntity<CommentsApplication> update(@PathVariable Integer id,@RequestBody CommentsApplication commentsApplication){
-        CommentsApplication updatedCommentsApplication= commentsApplicationService.update(id,commentsApplication);
+    public ResponseEntity<CommentsApplicationDetailsDTO> update(@PathVariable Integer id,@RequestBody CommentsApplicationCreateUpdateDTO commentsApplication){
+        CommentsApplicationDetailsDTO updatedCommentsApplication= commentsApplicationService.update(id,commentsApplication);
         return new ResponseEntity<>(updatedCommentsApplication,HttpStatus.OK);
     }
     @DeleteMapping("/{id}")

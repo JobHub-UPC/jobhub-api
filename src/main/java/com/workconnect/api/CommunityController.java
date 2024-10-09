@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/communities")
+@RequestMapping("/communities")
 @RequiredArgsConstructor
-public class AdminCommunityController {
+public class CommunityController {
     private final AdminCommunityService adminCommunityService;
 
     @GetMapping

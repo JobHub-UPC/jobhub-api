@@ -1,5 +1,7 @@
 package com.workconnect.api;
 
+import com.workconnect.dto.ApplicantQualificationCreateUpdateDTO;
+import com.workconnect.dto.ApplicantQualificationDetailsDTO;
 import com.workconnect.model.entity.ApplicantQualification;
 import com.workconnect.service.ApplicantQualificationService;
 import lombok.RequiredArgsConstructor;
@@ -19,32 +21,32 @@ public class ApplicantQualificationController {
     private final ApplicantQualificationService applicantQualificationService;
 
     @GetMapping
-    public ResponseEntity<List<ApplicantQualification>> listAll(){
-        List<ApplicantQualification> applicantQualifications= applicantQualificationService.getAll();
+    public ResponseEntity<List<ApplicantQualificationDetailsDTO>> listAll(){
+        List<ApplicantQualificationDetailsDTO> applicantQualifications= applicantQualificationService.getAll();
         return new ResponseEntity<>(applicantQualifications, HttpStatus.OK);
     }
 
     @GetMapping("/page")
-    public ResponseEntity<Page<ApplicantQualification>> paginate(@PageableDefault(size = 5,sort = "level")
+    public ResponseEntity<Page<ApplicantQualificationDetailsDTO>> paginate(@PageableDefault(size = 5,sort = "level")
         Pageable pageable){
-        Page<ApplicantQualification> page= applicantQualificationService.paginate(pageable);
+        Page<ApplicantQualificationDetailsDTO> page= applicantQualificationService.paginate(pageable);
         return new ResponseEntity<>(page,HttpStatus.OK);
     }
     @PostMapping()
-    public ResponseEntity<ApplicantQualification> create(@RequestBody ApplicantQualification applicantQualification){
-        ApplicantQualification createdApplicationQualification= applicantQualificationService.create(applicantQualification);
+    public ResponseEntity<ApplicantQualificationDetailsDTO> create(@RequestBody ApplicantQualificationCreateUpdateDTO applicantQualification){
+        ApplicantQualificationDetailsDTO createdApplicationQualification= applicantQualificationService.create(applicantQualification);
         return new ResponseEntity<>(createdApplicationQualification,HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApplicantQualification> getById(@PathVariable Integer id){
-        ApplicantQualification applicantQualification= applicantQualificationService.findById(id);
+    public ResponseEntity<ApplicantQualificationDetailsDTO> getById(@PathVariable Integer id){
+        ApplicantQualificationDetailsDTO applicantQualification= applicantQualificationService.findById(id);
         return new ResponseEntity<>(applicantQualification,HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApplicantQualification> update(@PathVariable Integer id,@RequestBody ApplicantQualification applicantQualification){
-        ApplicantQualification updatedApplicantQualification= applicantQualificationService.update(id,applicantQualification);
+    public ResponseEntity<ApplicantQualificationDetailsDTO> update(@PathVariable Integer id,@RequestBody ApplicantQualificationCreateUpdateDTO applicantQualification){
+        ApplicantQualificationDetailsDTO updatedApplicantQualification= applicantQualificationService.update(id,applicantQualification);
         return new ResponseEntity<>(updatedApplicantQualification,HttpStatus.OK);
     }
 

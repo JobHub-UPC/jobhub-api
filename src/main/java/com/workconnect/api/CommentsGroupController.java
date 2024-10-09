@@ -1,5 +1,7 @@
 package com.workconnect.api;
 
+import com.workconnect.dto.CommentsGroupCreateUpdateDTO;
+import com.workconnect.dto.CommentsGroupDetailsDTO;
 import com.workconnect.model.entity.CommentsGroup;
 import com.workconnect.service.CommentsGroupService;
 import lombok.RequiredArgsConstructor;
@@ -19,32 +21,32 @@ public class CommentsGroupController {
     private final CommentsGroupService commentsGroupService;
 
     @GetMapping
-    public ResponseEntity<List<CommentsGroup>> getAll(){
-        List<CommentsGroup> commentsGroups= commentsGroupService.getAll();
+    public ResponseEntity<List<CommentsGroupDetailsDTO>> getAll(){
+        List<CommentsGroupDetailsDTO> commentsGroups= commentsGroupService.getAll();
         return new ResponseEntity<>(commentsGroups, HttpStatus.OK);
     }
 
     @GetMapping("/page")
-    public ResponseEntity<Page<CommentsGroup>> paginate(@PageableDefault(size = 5, sort = "likes_count")Pageable pageable){
-        Page<CommentsGroup> commentsGroups= commentsGroupService.paginate(pageable);
+    public ResponseEntity<Page<CommentsGroupDetailsDTO>> paginate(@PageableDefault(size = 5, sort = "likes_count")Pageable pageable){
+        Page<CommentsGroupDetailsDTO> commentsGroups= commentsGroupService.paginate(pageable);
         return new ResponseEntity<>(commentsGroups,HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CommentsGroup> findById(@PathVariable Integer id){
-        CommentsGroup commentsGroup= commentsGroupService.findById(id);
+    public ResponseEntity<CommentsGroupDetailsDTO> findById(@PathVariable Integer id){
+        CommentsGroupDetailsDTO commentsGroup= commentsGroupService.findById(id);
         return new ResponseEntity<>(commentsGroup,HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<CommentsGroup> create(@RequestBody CommentsGroup commentsGroup){
-        CommentsGroup createdCommentsGroup= commentsGroupService.create(commentsGroup);
+    public ResponseEntity<CommentsGroupDetailsDTO> create(@RequestBody CommentsGroupCreateUpdateDTO commentsGroup){
+        CommentsGroupDetailsDTO createdCommentsGroup= commentsGroupService.create(commentsGroup);
         return new ResponseEntity<>(createdCommentsGroup,HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CommentsGroup> update(@PathVariable Integer id,@RequestBody CommentsGroup commentsGroup){
-        CommentsGroup updatedCommentsGroup= commentsGroupService.update(id,commentsGroup);
+    public ResponseEntity<CommentsGroupDetailsDTO> update(@PathVariable Integer id,@RequestBody CommentsGroupCreateUpdateDTO commentsGroup){
+        CommentsGroupDetailsDTO updatedCommentsGroup= commentsGroupService.update(id,commentsGroup);
         return new ResponseEntity<>(updatedCommentsGroup,HttpStatus.OK);
     }
 
