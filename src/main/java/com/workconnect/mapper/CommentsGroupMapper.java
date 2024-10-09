@@ -18,7 +18,6 @@ public class CommentsGroupMapper {
         return modelMapper.map(commentsGroupCreateUpdateDTO, CommentsGroup.class);
     }
     public CommentsGroupDetailsDTO toDetailsDTO(CommentsGroup commentsGroup) {
-        CommentsGroupDetailsDTO commentsGroupDetailsDTO = modelMapper.map(commentsGroup, CommentsGroupDetailsDTO.class);
-        return commentsGroupDetailsDTO;
+        return modelMapper.map(commentsGroup, CommentsGroupDetailsDTO.class);
     }
 }
