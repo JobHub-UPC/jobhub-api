@@ -2,7 +2,6 @@ package com.workconnect.api;
 
 import com.workconnect.dto.CommentsApplicationCreateUpdateDTO;
 import com.workconnect.dto.CommentsApplicationDetailsDTO;
-import com.workconnect.model.entity.CommentsApplication;
 import com.workconnect.service.CommentsApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

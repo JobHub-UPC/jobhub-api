@@ -24,8 +24,5 @@ public class JobPhaseMapper {
         return modelMapper.map(jobPhaseCreateUpdateDTO, JobPhase.class);
     }
 
-    public JobPhaseCreateUpdateDTO toCreateUpdateDTO(JobPhase jobPhase) {
-        return modelMapper.map(jobPhase, JobPhaseCreateUpdateDTO.class);
-    }
 
 }

@@ -2,7 +2,6 @@ package com.workconnect.api;
 
 import com.workconnect.dto.ApplicantQualificationCreateUpdateDTO;
 import com.workconnect.dto.ApplicantQualificationDetailsDTO;
-import com.workconnect.model.entity.ApplicantQualification;
 import com.workconnect.service.ApplicantQualificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

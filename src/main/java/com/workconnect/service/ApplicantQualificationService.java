@@ -2,7 +2,6 @@ package com.workconnect.service;
 
 import com.workconnect.dto.ApplicantQualificationCreateUpdateDTO;
 import com.workconnect.dto.ApplicantQualificationDetailsDTO;
-import com.workconnect.model.entity.ApplicantQualification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

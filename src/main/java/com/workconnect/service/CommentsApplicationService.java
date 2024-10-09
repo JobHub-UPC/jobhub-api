@@ -2,7 +2,6 @@ package com.workconnect.service;
 
 import com.workconnect.dto.CommentsApplicationCreateUpdateDTO;
 import com.workconnect.dto.CommentsApplicationDetailsDTO;
-import com.workconnect.model.entity.CommentsApplication;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
