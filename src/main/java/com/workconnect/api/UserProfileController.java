@@ -2,7 +2,6 @@ package com.workconnect.api;
 
 import com.workconnect.dto.UserProfileDTO;
 import com.workconnect.service.UserService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

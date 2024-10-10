@@ -1,7 +1,6 @@
 package com.workconnect.api;
 
 import com.workconnect.dto.MemberDTO;
-import com.workconnect.model.entity.Member;
 import com.workconnect.service.AdminMemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,8 +1,6 @@
 package com.workconnect.api;
 
 import com.workconnect.dto.CompanyDTO;
-import com.workconnect.model.entity.Company;
-import com.workconnect.repository.CompanyRepository;
 import com.workconnect.service.AdminCompanyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

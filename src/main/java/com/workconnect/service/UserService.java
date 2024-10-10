@@ -4,7 +4,6 @@ import com.workconnect.dto.AuthResponseDTO;
 import com.workconnect.dto.LoginDTO;
 import com.workconnect.dto.UserProfileDTO;
 import com.workconnect.dto.UserResgistrationDTO;
-import com.workconnect.model.entity.User;
 
 public interface UserService {
     // Register Company
