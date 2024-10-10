@@ -10,7 +10,7 @@ import lombok.Data;
 public class Company {
 
     @Id
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "name", nullable = false, unique = true)
@@ -31,7 +31,7 @@ public class Company {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id",
                 foreignKey = @ForeignKey(name = "fk_company_user"))
     private User user;

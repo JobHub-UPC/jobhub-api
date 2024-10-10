@@ -1,7 +1,12 @@
 package com.workconnect.api;
 
+import com.workconnect.dto.AuthResponseDTO;
+import com.workconnect.dto.LoginDTO;
+import com.workconnect.dto.UserProfileDTO;
+import com.workconnect.dto.UserResgistrationDTO;
 import com.workconnect.model.entity.User;
 import com.workconnect.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +21,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final UserService userService;
 
-    @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user) {
-        User newUser = userService.registerUser(user);
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+    //Registrar Applicant
+    @PostMapping("/register/applicant")
+    public ResponseEntity<UserProfileDTO> registerApplicant(@Valid @RequestBody UserResgistrationDTO userResgistrationDTO) {
+        UserProfileDTO userProfileDTO = userService.registerApplicant(userResgistrationDTO);
+        return new ResponseEntity<>(userProfileDTO, HttpStatus.CREATED);
+    }
+
+    //Registar Empresa
+    @PostMapping("/register/company")
+    public ResponseEntity<UserProfileDTO> registerCompany(@Valid @RequestBody UserResgistrationDTO userResgistrationDTO) {
+        UserProfileDTO userProfileDTO = userService.registerCompany(userResgistrationDTO);
+        return new ResponseEntity<>(userProfileDTO, HttpStatus.CREATED);
+    }
+
+    //Login
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody LoginDTO loginDTO) {
+        AuthResponseDTO authResponseDTO = userService.login(loginDTO);
+        return new ResponseEntity<>(authResponseDTO, HttpStatus.OK);
     }
 }

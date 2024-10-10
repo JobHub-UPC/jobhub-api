@@ -19,7 +19,7 @@ public class CommentsApplicationMapper {
     }
     public CommentsApplicationDetailsDTO toDetailsDTO(CommentsApplication commentsApplication) {
         CommentsApplicationDetailsDTO commentsApplicationDetailsDTO = modelMapper.map(commentsApplication, CommentsApplicationDetailsDTO.class);
-        commentsApplicationDetailsDTO.setUserRole(commentsApplication.getUser().getRole());
+        commentsApplicationDetailsDTO.setUserRole(commentsApplication.getUser().getRole().getName());
         commentsApplicationDetailsDTO.setApplicationId(commentsApplication.getApplication().getId());
         return commentsApplicationDetailsDTO;
     }
