@@ -1,5 +1,7 @@
 package com.workconnect.service.impl;
 
+import com.workconnect.dto.ApplicationReportDTO;
+import com.workconnect.mapper.ApplicationMapper;
 import com.workconnect.model.entity.Applicant;
 import com.workconnect.model.entity.Application;
 import com.workconnect.model.entity.Job;
@@ -22,30 +24,36 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ApplicationRepository applicationRepository;
     private final JobRepository jobRepository;
     private final ApplicantRepository applicantRepository;
+    private final ApplicationMapper applicationMapper;
 
     @Transactional(readOnly = true)
     @Override
-    public List<Application> getAll() {
-        return applicationRepository.findAll();
+    public List<ApplicationReportDTO> getAll() {
+        List<Application> applications = applicationRepository.findAll();
+        return applicationRepository.findAll()
+                .stream()
+                .map(applicationMapper::toDetailsDto)
+                .toList();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Page<Application> paginate(Pageable pageable) {
-        return applicationRepository.findAll(pageable);
+    public Page<ApplicationReportDTO> paginate(Pageable pageable) {
+        return applicationRepository.findAll(pageable)
+                .map(applicationMapper::toDetailsDto);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Application findById(Integer id) {
-        return applicationRepository.findById(id).orElseThrow(
-                ()-> new RuntimeException("Application not founded with id: " + id)
-        );
+    public ApplicationReportDTO findById(Integer id) {
+        Application application = applicationRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("Application not found"));
+        return applicationMapper.toDetailsDto(application);
     }
-
+/*
     @Transactional
     @Override
-    public Application create(Application application) {
+    public ApplicationReportDTO create(Application application) {
 
         Job job = jobRepository.findById(application.getJob().getId()).orElseThrow(()-> new RuntimeException("Job not founded with id: " + application.getJob().getId()));
         Applicant applicant = applicantRepository.findById(application.getApplicant().getId()).orElseThrow(()-> new RuntimeException("Applicant not found with id: " + application.getApplicant().getId()));
@@ -54,6 +62,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.setJob(job);
         return applicationRepository.save(application);
     }
+
+
 
     @Transactional
     @Override
@@ -68,6 +78,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         applicationFromDb.setJob(job);
         return applicationRepository.save(applicationFromDb);
     }
+
+ */
 
     @Transactional
     @Override
