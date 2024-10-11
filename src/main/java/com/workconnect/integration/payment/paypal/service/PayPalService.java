@@ -16,7 +16,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 
 import java.util.Base64;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 
