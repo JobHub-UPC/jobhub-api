@@ -35,5 +35,4 @@ public class User {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Company company;
-
 }
