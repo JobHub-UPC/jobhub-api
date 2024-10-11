@@ -1,5 +1,8 @@
 package com.workconnect.service.impl;
 
+import com.workconnect.dto.JobCreateUpdateDTO;
+import com.workconnect.dto.JobDetailsDTO;
+import com.workconnect.mapper.JobMapper;
 import com.workconnect.model.entity.Company;
 import com.workconnect.model.entity.Job;
 import com.workconnect.repository.CompanyRepository;
@@ -11,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -19,52 +23,84 @@ public class AdminJobServiceImpl implements AdminJobService {
     private final JobRepository jobRepository;
     private final CompanyRepository companyRepository;
 
+    private final JobMapper jobMapper;
+
     @Transactional(readOnly = true)
     @Override
-    public List<Job> getAll() {
-        return jobRepository.findAll();
+    public List<JobDetailsDTO> getAll() {
+        List<Job> jobs = jobRepository.findAll();
+        return jobRepository.findAll()
+                .stream()
+                .map(jobMapper::toDetailsDto)
+                .toList();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Page<Job> paginate(Pageable pageable) {
-        return jobRepository.findAll(pageable);
+    public Page<JobDetailsDTO> paginate(Pageable pageable) {
+        return jobRepository.findAll(pageable)
+                .map(jobMapper::toDetailsDto);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Job findById(Integer id) {
-        return jobRepository.findById(id).orElseThrow(
-                ()-> new RuntimeException("Job not found with id: " + id)
-        );
+    public JobDetailsDTO findById(Integer id) {
+        Job job = jobRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("Job not found"));
+        return jobMapper.toDetailsDto(job);
     }
 
     @Transactional
     @Override
-    public Job create(Job job) {
-        Company company = companyRepository.findById(job.getCompany().getId())
-                .orElseThrow(()-> new RuntimeException("Company not found with id" + job.getCompany().getId()));
+    public JobDetailsDTO create(JobCreateUpdateDTO jobCreateUpdateDTO) {
+        jobRepository.findById(jobCreateUpdateDTO.getId())
+                .ifPresent(existingJob -> {
+                    throw new RuntimeException("Job already exists");
+                });
+
+        // Verificar si la compañía no es nula
+        if (jobCreateUpdateDTO.getCompanyID() == null) {
+            throw new RuntimeException("Company is required to create a Job");
+        }
+
+        // Buscar la compañía por ID
+        Company company = companyRepository.findById(jobCreateUpdateDTO.getCompanyID())
+                .orElseThrow(() -> new RuntimeException("Company not found with id: " + jobCreateUpdateDTO.getCompanyID()));
+
+        Job job = jobMapper.toEntity(jobCreateUpdateDTO);
+
+        if (job.getPostedDate() == null) {
+            job.setPostedDate(LocalDateTime.now());
+        }
+
+        // Asignar la compañía al trabajo y guardar
         job.setCompany(company);
-        return jobRepository.save(job);
+
+        return jobMapper.toDetailsDto(jobRepository.save(job));
     }
+
 
     @Transactional
     @Override
-    public Job update(Integer id, Job updateJob) {
-        Job jobFromDB = findById(id);
+    public JobDetailsDTO update(Integer id, JobCreateUpdateDTO updateJobDTO) {
+        Job jobFromDB = jobRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Job not found with id: " + id));
 
-        Company company = companyRepository.findById(updateJob.getCompany().getId())
-                .orElseThrow(()-> new RuntimeException("Company not found with id" + updateJob.getCompany().getId()));
+        Company company = companyRepository.findById(updateJobDTO.getCompanyID())
+                .orElseThrow(()-> new RuntimeException("Company not found with id" + updateJobDTO.getCompanyID()));
 
-        jobFromDB.setJobType(updateJob.getJobType());
-        jobFromDB.setDescription(updateJob.getDescription());
-        jobFromDB.setLocation(updateJob.getLocation());
-        jobFromDB.setDeadlineDate(updateJob.getDeadlineDate());
-        jobFromDB.setPostedDate(updateJob.getPostedDate());
-        jobFromDB.setSalary(updateJob.getSalary());
-        jobFromDB.setTitle(updateJob.getTitle());
+
+        jobFromDB.setJobType(updateJobDTO.getJobType());
+        jobFromDB.setDescription(updateJobDTO.getDescription());
+        jobFromDB.setLocation(updateJobDTO.getLocation());
+        jobFromDB.setDeadlineDate(updateJobDTO.getDeadlineDate());
+        //jobFromDB.setPostedDate(updateJobDTO.getPostedDate());
+        jobFromDB.setSalary(updateJobDTO.getSalary());
+        jobFromDB.setTitle(updateJobDTO.getTitle());
         jobFromDB.setCompany(company);
-        return jobRepository.save(jobFromDB);
+
+        jobFromDB = jobRepository.save(jobFromDB);
+        return jobMapper.toDetailsDto(jobFromDB);
     }
 
     @Transactional

@@ -27,13 +27,13 @@ public class Job {
     @Column(name = "job_type", nullable = false)
     private String jobType;
 
-    @Column(name = "posted_date", nullable = false)
+    @Column(name = "posted_date")
     private LocalDateTime postedDate;
 
     @Column(name = "deadline_date", nullable = false)
     private LocalDateTime deadlineDate;
 
-    @Column(nullable = false)
+    @Column()
     private Float salary;
 
     @JsonIgnore
