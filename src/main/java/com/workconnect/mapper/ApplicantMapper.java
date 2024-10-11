@@ -20,7 +20,7 @@ public class ApplicantMapper {
 
      User user = modelMapper.map(applicant.getUser(), User.class);
      user.setEmail(applicantDTO.getEmail());
-     user.setPassword(applicantDTO.getPassword());
+     //user.setPassword(applicantDTO.getPassword());
 
       return applicantDTO;
     }

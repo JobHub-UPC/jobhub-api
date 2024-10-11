@@ -27,6 +27,6 @@ public class ApplicantDTO {
     private String country;
     private String college;
 
-    private String password;
+
 
 }

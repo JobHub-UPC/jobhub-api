@@ -1,8 +1,10 @@
 package com.workconnect.api;
 
 
-import com.workconnect.model.entity.Job;
+import com.workconnect.dto.JobCreateUpdateDTO;
+import com.workconnect.dto.JobDetailsDTO;
 import com.workconnect.service.AdminJobService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,32 +22,32 @@ public class AdminJobController {
     private final AdminJobService adminJobService;
 
     @GetMapping
-    public ResponseEntity<List<Job>> listAllJobs() {
-        List<Job>  jobs = adminJobService.getAll();
+    public ResponseEntity<List<JobDetailsDTO>> listAllJobs() {
+        List<JobDetailsDTO>  jobs = adminJobService.getAll();
         return new ResponseEntity<>(jobs, HttpStatus.OK);
     }
 
     @GetMapping("/page")
-    public ResponseEntity<Page<Job>> paginate(@PageableDefault(size = 5, sort = "title") Pageable pageable) {
-        Page<Job> page = adminJobService.paginate(pageable);
+    public ResponseEntity<Page<JobDetailsDTO>> paginate(@PageableDefault(size = 5, sort = "title") Pageable pageable) {
+        Page<JobDetailsDTO> page = adminJobService.paginate(pageable);
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Job> createJob(@RequestBody Job job) {
-        Job createdJob = adminJobService.create(job);
+    public ResponseEntity<JobDetailsDTO> createJob(@RequestBody JobCreateUpdateDTO jobDTO) {
+        JobDetailsDTO createdJob = adminJobService.create(jobDTO);
         return new ResponseEntity<>(createdJob, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Job> getById(@PathVariable Integer id) {
-        Job job = adminJobService.findById(id);
+    public ResponseEntity<JobDetailsDTO> getById(@PathVariable Integer id) {
+        JobDetailsDTO job = adminJobService.findById(id);
         return new ResponseEntity<>(job, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Job> update(@PathVariable Integer id, @RequestBody Job job) {
-        Job updatedJob = adminJobService.update(id, job);
+    public ResponseEntity<JobDetailsDTO> update(@PathVariable Integer id, @Valid @RequestBody JobCreateUpdateDTO jobDTO) {
+        JobDetailsDTO updatedJob = adminJobService.update(id, jobDTO);
         return new ResponseEntity<>(updatedJob, HttpStatus.OK);
     }
 
