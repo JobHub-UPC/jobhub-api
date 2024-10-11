@@ -1,6 +1,7 @@
 package com.workconnect.model.enums;
 
-public enum Role {
+public enum ERole {
     Company,
-    Applicant
+    Applicant,
+    Admin
 }

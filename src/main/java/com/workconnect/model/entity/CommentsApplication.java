@@ -25,9 +25,7 @@ public class CommentsApplication {
     foreignKey = @ForeignKey(name = "Fk_comments_application_id"))
     private User user;
 
-
     @JsonIgnore
-
     // Muchos comentarios se asocian a una aplicación
     @ManyToOne
     @JoinColumn(name = "application_id", referencedColumnName = "id",
