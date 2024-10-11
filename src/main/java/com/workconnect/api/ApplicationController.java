@@ -1,5 +1,6 @@
 package com.workconnect.api;
 
+import com.workconnect.dto.ApplicationReportDTO;
 import com.workconnect.model.entity.Application;
 import com.workconnect.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
@@ -15,30 +16,31 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/applications")
-@PreAuthorize("hasRole('Admin')")
+@RequestMapping("/admin/applications")
+
 public class ApplicationController {
     private final ApplicationService applicationService;
 
     @GetMapping
-    public ResponseEntity<List<Application>> getAll() {
-        List<Application> applications = applicationService.getAll();
+    public ResponseEntity<List<ApplicationReportDTO>> getAll() {
+        List<ApplicationReportDTO> applications = applicationService.getAll();
         return new ResponseEntity<>(applications, HttpStatus.OK);
     }
 
     @GetMapping("/page")
-    public ResponseEntity<Page<Application>> paginate(
+    public ResponseEntity<Page<ApplicationReportDTO>> paginate(
             @PageableDefault(size = 5, sort = "dateCreated") Pageable pageable) {
-        Page<Application> page = applicationService.paginate(pageable);
+        Page<ApplicationReportDTO> page = applicationService.paginate(pageable);
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Application> getById(@PathVariable Integer id) {
-        Application application = applicationService.findById(id);
+    public ResponseEntity<ApplicationReportDTO> getById(@PathVariable Integer id) {
+        ApplicationReportDTO application = applicationService.findById(id);
         return new ResponseEntity<>(application, HttpStatus.OK);
     }
 
+    /*
     @PostMapping
     public ResponseEntity<Application> create(@RequestBody Application application) {
         Application createApplication = applicationService.create(application);
@@ -52,6 +54,8 @@ public class ApplicationController {
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
+
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         applicationService.delete(id);
