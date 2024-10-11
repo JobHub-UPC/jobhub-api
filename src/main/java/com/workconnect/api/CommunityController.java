@@ -8,14 +8,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/communities")
+@RequestMapping("/communities")
 @RequiredArgsConstructor
-public class AdminCommunityController {
+@PreAuthorize("hasAnyRole('Company','Applicant')")
+public class CommunityController {
     private final AdminCommunityService adminCommunityService;
 
     @GetMapping

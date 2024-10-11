@@ -1,16 +1,21 @@
-INSERT INTO users (role, email, password, created, active)
+INSERT INTO roles(name) VALUES
+                            ('Admin'),
+                            ('Applicant'),
+                            ('Company')
+ON CONFLICT DO NOTHING;
+INSERT INTO users (rol_id, email, password, created, active)
 VALUES
-    ('ADMIN', 'admin@techcorp.com', 'admin123', '2024-09-01 10:00:00', TRUE),
-    ('USER', 'john.doe@gmail.com', 'password123', '2024-09-02 11:15:00', TRUE),
-    ('USER', 'jane.smith@yahoo.com', 'jane456', '2024-09-03 12:30:00', TRUE),
-    ('COMPANY', 'info@innovatech.com', 'innovatech789', '2024-09-04 13:45:00', TRUE),
-    ('USER', 'mike.jones@hotmail.com', 'mike321', '2024-09-05 14:00:00', FALSE),
-    ('USER', 'luis.gomez@gmail.com', 'luis654', '2024-09-06 09:30:00', TRUE),
-    ('COMPANY', 'sarah.connor@gmail.com', 'sarahpass', '2024-09-07 15:15:00', TRUE),
-    ('COMPANY', 'contact@startupxyz.com', 'startupxyz123', '2024-09-08 16:45:00', TRUE),
-    ('COMPANY', 'peter.parker@outlook.com', 'spiderman789', '2024-09-09 17:00:00', FALSE),
-    ('USER', 'diana.prince@wondercorp.com', 'wonderwoman321', '2024-09-10 08:20:00', TRUE),
-    ('COMPANY','contacto@gmail.com','jkajdklas23','2024-09-10 08:10:00',TRUE)
+    (1, 'admin@techcorp.com', 'admin123', '2024-09-01 10:00:00', TRUE),
+    (2, 'john.doe@gmail.com', 'password123', '2024-09-02 11:15:00', TRUE),
+    (2, 'jane.smith@yahoo.com', 'jane456', '2024-09-03 12:30:00', TRUE),
+    (3, 'info@innovatech.com', 'innovatech789', '2024-09-04 13:45:00', TRUE),
+    (2, 'mike.jones@hotmail.com', 'mike321', '2024-09-05 14:00:00', FALSE),
+    (2, 'luis.gomez@gmail.com', 'luis654', '2024-09-06 09:30:00', TRUE),
+    (3, 'sarah.connor@gmail.com', 'sarahpass', '2024-09-07 15:15:00', TRUE),
+    (3, 'contact@startupxyz.com', 'startupxyz123', '2024-09-08 16:45:00', TRUE),
+    (3, 'peter.parker@outlook.com', 'spiderman789', '2024-09-09 17:00:00', FALSE),
+    (2, 'diana.prince@wondercorp.com', 'wonderwoman321', '2024-09-10 08:20:00', TRUE),
+    (3,'contacto@gmail.com','jkajdklas23','2024-09-10 08:10:00',TRUE)
     ON CONFLICT DO NOTHING;
 
 -- Insertar profesionales
@@ -24,13 +29,13 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 -- Insertar empresas
-INSERT INTO companies (id, name, country, phone, email, website, description, user_id)
+INSERT INTO companies (name, country, phone, email, website, description, user_id)
 VALUES
-    (1, 'Innovatech', 'United States', '+1234567890', 'info@innovech.com', 'www.innovatech.com', 'Leading tech company specializing in innovative solutions.', 4),
-    (2, 'Sarah Technologies', 'Canada', '+0987654321', 'sarah.coor@gmail.com', 'www.sarahtech.com', 'Innovative solutions for technology and software.', 7),
-    (3, 'Startup XYZ', 'United Kingdom', '+1122334455', 'contact@startupxyz.com', 'www.startupxyz.com', 'Pioneering tech startup with cutting-edge solutions.', 8),
-    (4, 'Web Dynamics', 'Australia', '+2233445566', 'peter.park@outlook.com', 'www.webdynamics.com', 'Web solutions and consulting for businesses.', 9),
-    (5, 'Tech Connect', 'Germany', '+3344556677', 'contacto@gil.com', 'www.techconnect.com', 'Connecting technology with business needs.', 11)
+    ('Innovatech', 'United States', '+1234567890', 'info@innovech.com', 'www.innovatech.com', 'Leading tech company specializing in innovative solutions.', 4),
+    ( 'Sarah Technologies', 'Canada', '+0987654321', 'sarah.coor@gmail.com', 'www.sarahtech.com', 'Innovative solutions for technology and software.', 7),
+    ( 'Startup XYZ', 'United Kingdom', '+1122334455', 'contact@startupxyz.com', 'www.startupxyz.com', 'Pioneering tech startup with cutting-edge solutions.', 8),
+    ( 'Web Dynamics', 'Australia', '+2233445566', 'peter.park@outlook.com', 'www.webdynamics.com', 'Web solutions and consulting for businesses.', 9),
+    ( 'Tech Connect', 'Germany', '+3344556677', 'contacto@gil.com', 'www.techconnect.com', 'Connecting technology with business needs.', 11)
 ON CONFLICT DO NOTHING;
 
 -- Insertar empleos
@@ -54,13 +59,13 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 -- Insertar miembros
-INSERT INTO members (id, user_id, community_id, is_admin, join_date)
+INSERT INTO members (user_id, community_id, is_admin, join_date)
 VALUES
-    ( 1, 2, 1, TRUE, '2024-09-01 10:00:00'),
-    (2, 3, 2, TRUE, '2024-09-02 11:00:00'),
-    ( 3, 6, 3, TRUE, '2024-09-03 12:00:00'),
-    ( 4, 7, 4, TRUE, '2024-09-04 13:00:00'),
-    ( 5, 10, 5, TRUE, '2024-09-05 14:00:00')
+    ( 2, 1, TRUE, '2024-09-01 10:00:00'),
+    ( 3, 2, TRUE, '2024-09-02 11:00:00'),
+    (  6, 3, TRUE, '2024-09-03 12:00:00'),
+    ( 7, 4, TRUE, '2024-09-04 13:00:00'),
+    ( 10, 5, TRUE, '2024-09-05 14:00:00')
 ON CONFLICT DO NOTHING;
 
 -- Insertar comentarios en grupos

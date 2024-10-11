@@ -48,6 +48,7 @@ public class AdminCommunityServiceImpl implements AdminCommunityService {
     public CommunityDTO create(CommunityDTO communityDTO) {
         Community community = communityMapper.toEntity(communityDTO);
         community.setCreatedDate(LocalDateTime.now());
+        community.setMembersCount(1);
         community = communityRepository.save(community);
         return communityMapper.toDTO(community);
     }
@@ -56,13 +57,10 @@ public class AdminCommunityServiceImpl implements AdminCommunityService {
     public CommunityDTO update(Integer id, CommunityDTO updatedCommunityDTO){
         Community communityFromDb = communityRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("El autor con ID " + id + " no fue encontrado"));
-
-
         // Actualizar los campos
         communityFromDb.setName(updatedCommunityDTO.getName());
         communityFromDb.setDescription(updatedCommunityDTO.getDescription());
         communityFromDb.setIsPrivate(updatedCommunityDTO.getIsPrivate());
-
         communityFromDb = communityRepository.save(communityFromDb);
         return communityMapper.toDTO(communityFromDb);
     }
