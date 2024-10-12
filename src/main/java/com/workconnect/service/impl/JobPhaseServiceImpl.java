@@ -1,6 +1,10 @@
 package com.workconnect.service.impl;
 
 
+import com.workconnect.dto.JobPhaseCreateUpdateDTO;
+import com.workconnect.dto.JobPhaseDetailsDTO;
+import com.workconnect.exception.ResourceNotFoundException;
+import com.workconnect.mapper.JobPhaseMapper;
 import com.workconnect.model.entity.Job;
 import com.workconnect.model.entity.JobPhase;
 import com.workconnect.repository.JobPhaseRepository;
@@ -19,44 +23,61 @@ import java.util.List;
 public class JobPhaseServiceImpl implements JobPhaseService {
     private final JobPhaseRepository jobPhaseRepository;
     private final JobRepository jobRepository;
+    private final JobPhaseMapper jobPhaseMapper;
 
     @Transactional(readOnly = true)
     @Override
-    public List<JobPhase> getAll(){
-        return jobPhaseRepository.findAll();
+    public List<JobPhaseDetailsDTO> getAll(){
+        List<JobPhase> jobPhases = jobPhaseRepository.findAll();
+        return jobPhases.stream()
+                .map(jobPhaseMapper::toDetailsDTO)
+                .toList();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Page<JobPhase> paginate(Pageable pageable){
-        return jobPhaseRepository.findAll(pageable);
+    public Page<JobPhaseDetailsDTO> paginate(Pageable pageable){
+        Page<JobPhase> jobPhases = jobPhaseRepository.findAll(pageable);
+        return jobPhases.map(jobPhaseMapper::toDetailsDTO);
+
     }
 
     @Transactional(readOnly = true)
     @Override
-    public JobPhase findById(Integer id){
-        return jobPhaseRepository.findById(id).orElseThrow(
-                ()->new RuntimeException("JobPhase Not Founded with id: " + id)
-        );
+    public JobPhaseDetailsDTO findById(Integer id){
+        JobPhase jobPhase =  jobPhaseRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("JobPhase not found with id: " + id));
+        return jobPhaseMapper.toDetailsDTO(jobPhase);
+
     }
 
     @Transactional
     @Override
-    public JobPhase create(JobPhase jobPhase){
-        Job job = jobRepository.findById(jobPhase.getJob().getId()).orElseThrow(()-> new RuntimeException("Job not found with id: " + jobPhase.getJob().getId()));
+    public JobPhaseDetailsDTO create(JobPhaseCreateUpdateDTO jobPhaseCreateUpdateDTO){
+        Job job = jobRepository.findById(jobPhaseCreateUpdateDTO.getJobId()).orElseThrow(()-> new RuntimeException("Job not founded with id: " + jobPhaseCreateUpdateDTO.getJobId()));
+
+        JobPhase jobPhase=jobPhaseMapper.toEntity(jobPhaseCreateUpdateDTO);
         jobPhase.setJob(job);
-        return jobPhaseRepository.save(jobPhase);
+        jobPhase.setName(jobPhaseCreateUpdateDTO.getName());
+        return jobPhaseMapper.toDetailsDTO(jobPhaseRepository.save(jobPhase));
+
     }
     @Transactional
     @Override
-    public JobPhase update(Integer id,JobPhase updateJobPhase){
-        JobPhase jobPhaseFromDb=findById(id);
+    public JobPhaseDetailsDTO update(Integer id,JobPhaseCreateUpdateDTO jobPhaseCreateUpdateDTO){
 
-        Job job = jobRepository.findById(updateJobPhase.getJob().getId()).orElseThrow(()-> new RuntimeException("Job not found with id: " + updateJobPhase.getJob().getId()));
+        JobPhase jobPhasefromDb = jobPhaseRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("JobPhase not found with id: " + id));
 
-        jobPhaseFromDb.setName(updateJobPhase.getName());
-        jobPhaseFromDb.setJob(job);
-        return jobPhaseRepository.save(jobPhaseFromDb);
+
+        Job job = jobRepository.findById(jobPhaseCreateUpdateDTO.getJobId())
+                .orElseThrow(() -> new RuntimeException("Job not found with id: " + jobPhaseCreateUpdateDTO.getJobId()));
+
+        jobPhasefromDb.setJob(job);
+        jobPhasefromDb.setName(jobPhaseCreateUpdateDTO.getName());
+
+        return jobPhaseMapper.toDetailsDTO(jobPhaseRepository.save(jobPhasefromDb));
+
     }
 
     @Transactional

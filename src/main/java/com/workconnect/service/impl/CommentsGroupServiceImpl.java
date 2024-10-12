@@ -1,5 +1,8 @@
 package com.workconnect.service.impl;
 
+import com.workconnect.dto.CommentsGroupCreateUpdateDTO;
+import com.workconnect.dto.CommentsGroupDetailsDTO;
+import com.workconnect.mapper.CommentsGroupMapper;
 import com.workconnect.model.entity.CommentsGroup;
 import com.workconnect.model.entity.Member;
 import com.workconnect.repository.CommentsGroupRepository;
@@ -11,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -18,49 +22,54 @@ import java.util.List;
 public class CommentsGroupServiceImpl implements CommentsGroupService {
     private final CommentsGroupRepository commentsGroupRepository;
     private final MemberRepository memberRepository;
-
+    private final CommentsGroupMapper commentsGroupMapper;
     @Transactional(readOnly = true)
     @Override
-    public List<CommentsGroup> getAll(){
-        return commentsGroupRepository.findAll();
+    public List<CommentsGroupDetailsDTO> getAll(){
+        List<CommentsGroup> commentsGroups = commentsGroupRepository.findAll();
+        return commentsGroups.stream().map(commentsGroupMapper::toDetailsDTO).toList();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Page<CommentsGroup> paginate(Pageable pageable){
-        return commentsGroupRepository.findAll(pageable);
+    public Page<CommentsGroupDetailsDTO> paginate(Pageable pageable){
+        Page<CommentsGroup> commentsGroups = commentsGroupRepository.findAll(pageable);
+        return commentsGroups.map(commentsGroupMapper::toDetailsDTO);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public CommentsGroup findById(Integer id){
-        return commentsGroupRepository.findById(id).orElseThrow(
+    public CommentsGroupDetailsDTO findById(Integer id){
+        CommentsGroup commentsGroup= commentsGroupRepository.findById(id).orElseThrow(
                 ()->new RuntimeException("CommentsGroup Not Founded with id:" + id)
         );
+        return commentsGroupMapper.toDetailsDTO(commentsGroup);
     }
 
     @Transactional
     @Override
-    public CommentsGroup create(CommentsGroup commentsGroup){
-        Member member = memberRepository.findById(commentsGroup.getMember().getId()).
-                orElseThrow(()-> new RuntimeException("Member Not Founded with id:" + commentsGroup.getMember().getId()));
+    public CommentsGroupDetailsDTO create(CommentsGroupCreateUpdateDTO commentsGroupCreated){
+        Member member = memberRepository.findById(commentsGroupCreated.getMemberId()).
+                orElseThrow(()-> new RuntimeException("Member Not Founded with id:" + commentsGroupCreated.getMemberId()));
+        CommentsGroup commentsGroup= commentsGroupMapper.toEntity(commentsGroupCreated);
         commentsGroup.setMember(member);
-        return commentsGroupRepository.save(commentsGroup);
+        commentsGroup.setPostedDate(LocalDateTime.now());
+        return commentsGroupMapper.toDetailsDTO(commentsGroupRepository.save(commentsGroup));
     }
 
     @Transactional
     @Override
-    public CommentsGroup update(Integer id,CommentsGroup updateCommentsGroup){
-        CommentsGroup commentsGroupFromDb=findById(id);
-
-        Member member = memberRepository.findById(updateCommentsGroup.getMember().getId())
-                        .orElseThrow(()-> new RuntimeException("Member Not Founded with id:" + updateCommentsGroup.getMember().getId()));
-
+    public CommentsGroupDetailsDTO update(Integer id,CommentsGroupCreateUpdateDTO updateCommentsGroup){
+        CommentsGroup commentsGroupFromDb=commentsGroupRepository.findById(id).orElseThrow(
+                ()->new RuntimeException("CommentsGroup Not Founded with id:" + id)
+        );
+        Member member = memberRepository.findById(updateCommentsGroup.getMemberId())
+                        .orElseThrow(()-> new RuntimeException("Member Not Founded with id:" + updateCommentsGroup.getMemberId()));
+        commentsGroupFromDb.setPostedDate(LocalDateTime.now());
         commentsGroupFromDb.setContent(updateCommentsGroup.getContent());
         commentsGroupFromDb.setLikesCount(updateCommentsGroup.getLikesCount());
-        commentsGroupFromDb.setPostedDate(updateCommentsGroup.getPostedDate());
         commentsGroupFromDb.setMember(member);
-        return commentsGroupRepository.save(commentsGroupFromDb);
+        return commentsGroupMapper.toDetailsDTO(commentsGroupRepository.save(commentsGroupFromDb));
     }
 
     @Transactional
