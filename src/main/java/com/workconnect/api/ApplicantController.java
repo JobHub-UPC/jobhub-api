@@ -1,6 +1,10 @@
 package com.workconnect.api;
 
-import com.workconnect.dto.ApplicantDTO;
+import com.workconnect.dto.ApplicantCreateDTO;
+
+import com.workconnect.dto.ApplicantDetailsDTO;
+import com.workconnect.dto.ApplicantUpdateDTO;
+
 import com.workconnect.service.ApplicantService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,33 +26,33 @@ public class ApplicantController {
     private final ApplicantService applicantService;
 
     @GetMapping
-    public ResponseEntity<List<ApplicantDTO>> listAll() {
-        List<ApplicantDTO> applicants = applicantService.getAll();
+    public ResponseEntity<List<ApplicantDetailsDTO>> listAll() {
+        List<ApplicantDetailsDTO> applicants = applicantService.getAll();
         return new ResponseEntity<>(applicants, HttpStatus.OK);
     }
 
     @GetMapping("/page")
-    public ResponseEntity<Page<ApplicantDTO>> paginate(@PageableDefault(size = 5, sort = "firstName")
+    public ResponseEntity<Page<ApplicantDetailsDTO>> paginate(@PageableDefault(size = 5, sort = "firstName")
                                                     Pageable pageable) {
-        Page<ApplicantDTO> page = applicantService.paginate(pageable);
+        Page<ApplicantDetailsDTO> page = applicantService.paginate(pageable);
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<ApplicantDTO> create(@Valid @RequestBody ApplicantDTO applicantDTO) {
-        ApplicantDTO createdApplicant = applicantService.create(applicantDTO);
+    public ResponseEntity<ApplicantDetailsDTO> create(@Valid @RequestBody ApplicantCreateDTO applicantDTO) {
+        ApplicantDetailsDTO createdApplicant = applicantService.create(applicantDTO);
         return new ResponseEntity<>(createdApplicant, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApplicantDTO> getApplicantById(@PathVariable Integer id) {
-        ApplicantDTO applicant = applicantService.findById(id);
+    public ResponseEntity<ApplicantDetailsDTO> getApplicantById(@PathVariable Integer id) {
+        ApplicantDetailsDTO applicant = applicantService.findById(id);
         return new ResponseEntity<>(applicant, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApplicantDTO> updateApplicant(@PathVariable Integer id, @RequestBody ApplicantDTO applicantDTO) {
-        ApplicantDTO updatedApplicant = applicantService.update(id, applicantDTO);
+    public ResponseEntity<ApplicantDetailsDTO> updateApplicant(@PathVariable Integer id, @RequestBody ApplicantUpdateDTO applicantDTO) {
+        ApplicantDetailsDTO updatedApplicant = applicantService.update(id, applicantDTO);
         return new ResponseEntity<>(updatedApplicant, HttpStatus.OK);
     }
 

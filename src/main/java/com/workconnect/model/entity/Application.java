@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -30,5 +31,9 @@ public class Application {
     @JoinColumn(name = "applicant_id", referencedColumnName = "id",
                 foreignKey = @ForeignKey(name = "FK_applicant_application"))
     private Applicant applicant;
+
+
+    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FollowUpApplication> followUpApplications;
 
 }
