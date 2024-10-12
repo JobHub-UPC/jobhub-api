@@ -7,11 +7,11 @@ import lombok.Data;
 @Data
 public class CommunityDTO {
     private Integer id;
-    @NotBlank(message = "Nombre del grupo Obliga")
-    @Size(max=50, message = "Debe tener como maximo 50 caracteres")
+    @NotBlank(message = "Name is mandatory")
+    @Size(max=50, message = "Must be 50 characters long")
     private String name;
-    @NotBlank(message = "Nombre del grupo Obliga")
-    @Size(max=1000, message = "Debe tener como maximo 1000 caracteres")
+    @NotBlank(message = "Name is mandatory")
+    @Size(max=1000, message = "Must be 1000 characters long")
     private  String description;
 
     private Boolean isPrivate;

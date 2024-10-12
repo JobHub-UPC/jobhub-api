@@ -13,9 +13,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column( nullable = false)
-    private String role;
-
     @Column(unique = true, nullable = false)
     private String email;
 
@@ -28,7 +25,14 @@ public class User {
     @Column(nullable = false)
     private Boolean active;
 
-    //@Enumerated(EnumType.STRING)
-    //private Role role;
+    @ManyToOne
+    @JoinColumn(name="rol_id", referencedColumnName = "id",
+                foreignKey = @ForeignKey(name = "FK_users_rol"))
+    private Role role;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private Applicant applicant;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private Company company;
 }

@@ -1,5 +1,8 @@
 package com.workconnect.service.impl;
 
+import com.workconnect.dto.ApplicantQualificationCreateUpdateDTO;
+import com.workconnect.dto.ApplicantQualificationDetailsDTO;
+import com.workconnect.mapper.ApplicantQualificationMapper;
 import com.workconnect.model.entity.ApplicantQualification;
 import com.workconnect.model.entity.FollowUpApplication;
 import com.workconnect.repository.ApplicantQualificationRepository;
@@ -18,41 +21,49 @@ import java.util.List;
 public class ApplicantQualificationServiceImpl implements ApplicantQualificationService {
     private final ApplicantQualificationRepository applicantQualificationRepository;
     private final FollowUpApplicationRepository followUpApplicationRepository;
+    private final ApplicantQualificationMapper applicantQualificationMapper;
 
     @Transactional(readOnly = true)
     @Override
-    public List<ApplicantQualification> getAll(){return applicantQualificationRepository.findAll();}
+    public List<ApplicantQualificationDetailsDTO> getAll(){
+        List<ApplicantQualification> applicantQualifications= applicantQualificationRepository.findAll();
+        return applicantQualifications.stream().map(applicantQualificationMapper::toDetailsDTO).toList();
+    }
 
     @Transactional(readOnly = true)
     @Override
-    public Page<ApplicantQualification> paginate(Pageable pageable){return applicantQualificationRepository.findAll(pageable);}
+    public Page<ApplicantQualificationDetailsDTO> paginate(Pageable pageable){
+        Page<ApplicantQualification> applicantQualification= applicantQualificationRepository.findAll(pageable);
+        return applicantQualification.map(applicantQualificationMapper::toDetailsDTO);
+    }
 
     @Transactional(readOnly = true)
     @Override
-    public ApplicantQualification findById(Integer id){
-        return applicantQualificationRepository.findById(id)
+    public ApplicantQualificationDetailsDTO findById(Integer id){
+        ApplicantQualification applicantQualification= applicantQualificationRepository.findById(id)
                 .orElseThrow(()->new RuntimeException("Application Qualification not founded with id: " + id));
+        return applicantQualificationMapper.toDetailsDTO(applicantQualification);
     }
 
     @Transactional
     @Override
-    public ApplicantQualification create(ApplicantQualification applicantQualification){
-        FollowUpApplication followUpApplication = followUpApplicationRepository.findById(applicantQualification.getFollowUpApplication().getId())
-                .orElseThrow(()-> new RuntimeException("Application not founded with id: " + applicantQualification.getFollowUpApplication().getId()));
-        applicantQualification.setFollowUpApplication(followUpApplication);
-        return applicantQualificationRepository.save(applicantQualification);
+    public ApplicantQualificationDetailsDTO create(ApplicantQualificationCreateUpdateDTO applicantQualification){
+        FollowUpApplication followUpApplication = followUpApplicationRepository.findById(applicantQualification.getFollowUpApplication())
+                .orElseThrow(()-> new RuntimeException("Application not founded with id: " + applicantQualification.getFollowUpApplication()));
+        ApplicantQualification applicantQualification1=applicantQualificationMapper.toEntity(applicantQualification);
+        applicantQualification1.setFollowUpApplication(followUpApplication);
+        return applicantQualificationMapper.toDetailsDTO(applicantQualificationRepository.save(applicantQualification1));
     }
 
     @Transactional
     @Override
-    public ApplicantQualification update(Integer id,ApplicantQualification updateApplicantQualification){
-        ApplicantQualification applicantQualificationFromDb=findById(id);
-
-        FollowUpApplication followUpApplication = followUpApplicationRepository.findById(updateApplicantQualification.getFollowUpApplication().getId())
-                        .orElseThrow(()-> new RuntimeException("Application not founded with id: " + updateApplicantQualification.getFollowUpApplication().getId()));
-        applicantQualificationFromDb.setLevel(updateApplicantQualification.getLevel());
+    public ApplicantQualificationDetailsDTO update(Integer id,ApplicantQualificationCreateUpdateDTO updateApplicantQualification){
+        FollowUpApplication followUpApplication = followUpApplicationRepository.findById(updateApplicantQualification.getFollowUpApplication())
+                        .orElseThrow(()-> new RuntimeException("Application not founded with id: " + updateApplicantQualification.getFollowUpApplication()));
+        ApplicantQualification applicantQualificationFromDb = applicantQualificationRepository.findById(id).orElseThrow(()-> new RuntimeException("Applicant Qualification not founded with id: " + id));
+        applicantQualificationFromDb.setLevel(updateApplicantQualification.getLevel())  ;
         applicantQualificationFromDb.setFollowUpApplication(followUpApplication);
-        return applicantQualificationRepository.save(applicantQualificationFromDb);
+        return applicantQualificationMapper.toDetailsDTO(applicantQualificationRepository.save(applicantQualificationFromDb));
     }
 
     @Transactional
