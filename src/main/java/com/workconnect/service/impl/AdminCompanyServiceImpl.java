@@ -1,6 +1,8 @@
 package com.workconnect.service.impl;
 
-import com.workconnect.dto.CompanyDTO;
+import com.workconnect.dto.CompanyCreateDTO;
+import com.workconnect.dto.CompanyUpdateDTO;
+import com.workconnect.dto.CompanyDetailsDTO;
 import com.workconnect.exception.BadRequestException;
 import com.workconnect.exception.ResourceNotFoundException;
 import com.workconnect.mapper.CompanyMapper;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -27,56 +30,66 @@ public class AdminCompanyServiceImpl implements AdminCompanyService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<CompanyDTO> getAll() {
-        List<Company> companies = companyRepository.findAll();
-        return companies.stream()
-                .map(companyMapper::toDTO)
+    public List<CompanyDetailsDTO> getAll() {
+        //List<Company> companies = companyRepository.findAll();
+        return companyRepository.findAll()
+                .stream()
+                .map(companyMapper::toDetailsDto)
                 .toList();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Page<CompanyDTO> paginate(Pageable pageable) {
-        Page<Company> companies = companyRepository.findAll(pageable);
-        return companies.map(companyMapper::toDTO);
+    public Page<CompanyDetailsDTO> paginate(Pageable pageable) {
+        return companyRepository.findAll(pageable)
+                .map(companyMapper::toDetailsDto);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public CompanyDTO findById(Integer id) {
+    public CompanyDetailsDTO findById(Integer id) {
         Company company =  companyRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Company not found with id: " + id));
-        return companyMapper.toDTO(company);
+        return companyMapper.toDetailsDto(company);
     }
 
     @Transactional
     @Override
-    public CompanyDTO create(CompanyDTO companyDTO) {
-        companyRepository.findByNameAndEmail(companyDTO.getName(), companyDTO.getEmail())
+    public CompanyDetailsDTO create(CompanyCreateDTO companyCreateDTO) {
+        // Verifica si la empresa ya existe
+        companyRepository.findByNameAndEmail(companyCreateDTO.getName(), companyCreateDTO.getEmail())
                 .ifPresent(existingCompany -> {
                     throw new BadRequestException("Company already exists");
                 });
 
-        User user = userRepository.findById(companyDTO.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + companyDTO.getId()));
+        // Crea un nuevo usuario
+        User user = new User(); // Asegúrate de que la clase User tenga un constructor vacío
+        user.setRole("company"); // Aquí se setea el rol a "company"
+        user.setCreated(LocalDateTime.now());
+        user.setActive(true);
+        user.setEmail(companyCreateDTO.getEmail());
+        user.setPassword(companyCreateDTO.getPassword());
 
-        Company company = companyMapper.toEntity(companyDTO);
+        // Guarda el nuevo usuario
+        user = userRepository.save(user); // Guarda el usuario en la base de datos
+
+        // Mapea la empresa y la asocia con el nuevo usuario
+        Company company = companyMapper.toEntity(companyCreateDTO);
         company.setUser(user);
+
+        // Guarda la nueva empresa
         company = companyRepository.save(company);
-        return companyMapper.toDTO(company);
+
+        return companyMapper.toDetailsDto(company);
     }
+
 
     @Transactional
     @Override
-    public CompanyDTO update(Integer id, CompanyDTO updateCompanyDTO) {
+    public CompanyDetailsDTO update(Integer id, CompanyUpdateDTO updateCompanyDTO) {
         Company companyFromDb = companyRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Company not found with id: " + id));
 
-        //User user = userRepository.findById(updateCompanyDTO.getUser().getId())
-        //                .orElseThrow(() -> new RuntimeException("User not found with id: " + updateCompanyDTO.getUser().getId()));
-
-        User user = userRepository.findById(updateCompanyDTO.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + updateCompanyDTO.getId()));
 
         companyRepository.findByNameAndEmail(updateCompanyDTO.getName(), updateCompanyDTO.getEmail())
                 .filter(existingCompany -> !existingCompany.getId().equals(id))
@@ -88,10 +101,18 @@ public class AdminCompanyServiceImpl implements AdminCompanyService {
         companyFromDb.setDescription(updateCompanyDTO.getDescription());
         companyFromDb.setCountry(updateCompanyDTO.getCountry());
         companyFromDb.setWebsite(updateCompanyDTO.getWebsite());
-        companyFromDb.setUser(user);
+        companyFromDb.setEmail(updateCompanyDTO.getEmail());
+        companyFromDb.setPhone(updateCompanyDTO.getPhone());
 
+        // Obtener el usuario asociado a la empresa
+        User user = companyFromDb.getUser();
+        if (user != null) {
+            // Actualiza el correo electrónico del usuario
+            user.setEmail(updateCompanyDTO.getEmail());
+            //userRepository.save(user);
+        }
         companyFromDb = companyRepository.save(companyFromDb);
-        return companyMapper.toDTO(companyFromDb);
+        return companyMapper.toDetailsDto(companyFromDb);
     }
 
     @Transactional
