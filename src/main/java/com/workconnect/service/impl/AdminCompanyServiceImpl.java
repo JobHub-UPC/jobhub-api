@@ -7,7 +7,9 @@ import com.workconnect.exception.BadRequestException;
 import com.workconnect.exception.ResourceNotFoundException;
 import com.workconnect.mapper.CompanyMapper;
 import com.workconnect.model.entity.Company;
+import com.workconnect.model.entity.Role;
 import com.workconnect.model.entity.User;
+import com.workconnect.model.enums.ERole;
 import com.workconnect.repository.CompanyRepository;
 import com.workconnect.repository.UserRepository;
 import com.workconnect.service.AdminCompanyService;
@@ -64,11 +66,16 @@ public class AdminCompanyServiceImpl implements AdminCompanyService {
 
         // Crea un nuevo usuario
         User user = new User(); // Asegúrate de que la clase User tenga un constructor vacío
-        user.setRole("company"); // Aquí se setea el rol a "company"
+        //user.setRole("Company"); // Aquí se setea el rol a "company"
         user.setCreated(LocalDateTime.now());
         user.setActive(true);
         user.setEmail(companyCreateDTO.getEmail());
         user.setPassword(companyCreateDTO.getPassword());
+
+        Role companyRole = new Role();
+        companyRole.setName(ERole.Company);
+        user.setRole(companyRole);
+
 
         // Guarda el nuevo usuario
         user = userRepository.save(user); // Guarda el usuario en la base de datos

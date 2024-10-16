@@ -7,6 +7,7 @@ import com.workconnect.exception.BadRequestException;
 import com.workconnect.exception.ResourceNotFoundException;
 import com.workconnect.mapper.ApplicantMapper;
 import com.workconnect.model.entity.*;
+import com.workconnect.model.enums.ERole;
 import com.workconnect.repository.*;
 import com.workconnect.service.ApplicantService;
 import lombok.RequiredArgsConstructor;
@@ -67,7 +68,12 @@ public class ApplicantServiceImpl implements ApplicantService {
         user.setPassword(applicantCreateDTO.getPassword());
         user.setCreated(LocalDateTime.now());
         user.setActive(true);
-        user.setRole("Applicant");
+        //user.setRole("Applicant");
+
+        Role applicantRole = new Role();
+        applicantRole.setName(ERole.Applicant);
+        user.setRole(applicantRole);
+
 
         user = userRepository.save(user);
 

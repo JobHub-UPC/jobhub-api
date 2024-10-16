@@ -1,0 +1,11 @@
+* [32mdevelop[m
+  feature/ApplicantService[m
+  feature/Application-DTO[m
+  feature/Job-DTO-implementation[m
+  feature/authController[m
+  feature/company[m
+  fix/Applicant-DTO[m
+  fix/Company-DTO[m
+  fix/Member-DTO[m
+  fix/serviceImpl[m
+  main[m

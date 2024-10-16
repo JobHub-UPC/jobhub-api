@@ -23,7 +23,7 @@ public class MemberMapper {
         MemberReportDTO dto = modelMapper.map(member, MemberReportDTO.class);
 
         //Mapeo manual
-        dto.setRole(member.getUser().getRole());
+        dto.setRole(member.getUser().getRole().getName().name());
         dto.setIsActive(member.getUser().getActive());
         dto.setMemberMail(member.getUser().getEmail());
         dto.setCommunityName(member.getComunity().getName());
