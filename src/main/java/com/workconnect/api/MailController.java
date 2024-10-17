@@ -14,7 +14,7 @@ public class MailController {
     private final PasswordResetTokenService passwordResetTokenService;
 
 
-    @PostMapping("/sendEmail")
+    @PostMapping("/sendMail")
     public ResponseEntity<Void> sendPasswordResetMail(@RequestBody String email) throws Exception {
         passwordResetTokenService.createAndSendPasswordResetToken(email);
         return new ResponseEntity<>(HttpStatus.OK);

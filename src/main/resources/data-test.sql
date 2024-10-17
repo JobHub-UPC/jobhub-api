@@ -16,7 +16,7 @@ VALUES
     (3, 'peter.parker@outlook.com', 'spiderman789', '2024-09-09 17:00:00', FALSE),
     (2, 'diana.prince@wondercorp.com', 'wonderwoman321', '2024-09-10 08:20:00', TRUE),
     (3,'contacto@gmail.com','jkajdklas23','2024-09-10 08:10:00',TRUE),
-    (3,'agustd.best.rapper1@gmail.com','123546498','2024-09-10 08:10:00',TRUE)
+    (3,'agustdbestrapper1@gmail.com','498654648','2024-09-10 08:10:00',TRUE)
 
     ON CONFLICT DO NOTHING;
 

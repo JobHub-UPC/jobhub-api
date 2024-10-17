@@ -3,6 +3,8 @@ package com.workconnect.service.impl;
 import com.workconnect.dto.PaymentCaptureResponse;
 import com.workconnect.dto.PaymentOrderResponse;
 import com.workconnect.dto.UserSubscriptionDTO;
+import com.workconnect.integration.notification.email.dto.Mail;
+import com.workconnect.integration.notification.email.service.EmailService;
 import com.workconnect.integration.payment.paypal.dto.OrderCaptureResponse;
 import com.workconnect.integration.payment.paypal.dto.OrderResponse;
 import com.workconnect.integration.payment.paypal.service.PayPalService;
@@ -10,7 +12,14 @@ import com.workconnect.service.CheckoutService;
 import com.workconnect.service.UserSubscriptionService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RequiredArgsConstructor
@@ -19,10 +28,10 @@ public class CheckoutServiceImpl implements CheckoutService {
 
     private final PayPalService payPalService;
     private final UserSubscriptionService userSubscriptionService;
-    //private final EmailService emailService;
+    private final EmailService emailService;
 
-    //@Value("${spring.mail.username}")
-    //private String mailFrom;
+    @Value("${spring.mail.username}")
+    private String mailFrom;
 
     @Override
     public PaymentOrderResponse createPayment(Integer purchaseId, String returnUrl, String cancelUrl) {
@@ -52,13 +61,13 @@ public class CheckoutServiceImpl implements CheckoutService {
             UserSubscriptionDTO userSubscriptionDTO = userSubscriptionService.confirmUserSubscription(Integer.parseInt(purchaseIdStr));
             paypalCaptureResponse.setPurchaseId(userSubscriptionDTO.getId());
 
-            //sendPurchaseConfirmationEmail(userSubscriptionDTO);
+            sendPurchaseConfirmationEmail(userSubscriptionDTO);
 
         }
         return paypalCaptureResponse;
     }
 
-    /*private void sendPurchaseConfirmationEmail(UserSubscriptionDTO userSubscriptionDTO) throws MessagingException {
+    private void sendPurchaseConfirmationEmail(UserSubscriptionDTO userSubscriptionDTO) throws MessagingException {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
@@ -76,6 +85,6 @@ public class CheckoutServiceImpl implements CheckoutService {
                 model,
                 mailFrom
         );
-        emailService.sendEmail(mail,"email/purchase-confirmation-template");
-    }*/
+        emailService.sendMail(mail,"email/confirmation-template");
+    }
 }

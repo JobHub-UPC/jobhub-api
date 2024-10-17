@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.workconnect</groupId>
-    <artifactId>demo1</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>demo1</name>
-    <description>demo1</description>
+    <artifactId>jobhub-api</artifactId>
+    <version>0.0.1</version>
+    <name>jobhub-api</name>
+    <description>jobhub-api</description>
     <url/>
     <licenses>
         <license/>
