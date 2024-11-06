@@ -7,4 +7,5 @@ public class AuthResponseDTO {
     private String token;
     private String phone;
     private String role;
+
 }
