@@ -59,4 +59,9 @@ public class CompanyController {
         adminCompanyService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+    @GetMapping("/findIdCompany/{userId}")
+    public ResponseEntity<Integer> findIdCompanyByUserId(@PathVariable Integer userId){
+        Integer companyId = adminCompanyService.findIdCompanyByUserId(userId).orElseThrow();
+        return new ResponseEntity<>(companyId, HttpStatus.OK);
+    }
 }

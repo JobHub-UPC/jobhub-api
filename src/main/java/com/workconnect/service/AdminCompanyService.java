@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AdminCompanyService  {
     List<CompanyDetailsDTO> getAll();
@@ -15,5 +16,5 @@ public interface AdminCompanyService  {
     CompanyDetailsDTO create(CompanyCreateDTO companyCreateDTO);
     CompanyDetailsDTO update(Integer id, CompanyUpdateDTO updateCompanyDTO);
     void delete(Integer id);
-
+    Optional<Integer> findIdCompanyByUserId(Integer userId);
 }
