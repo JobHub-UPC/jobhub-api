@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -128,5 +129,10 @@ public class AdminCompanyServiceImpl implements AdminCompanyService {
         Company company = companyRepository.findById(id)
                         .orElseThrow(() -> new ResourceNotFoundException("Company not found with id: " + id));
         companyRepository.delete(company);
+    }
+    @Transactional
+    @Override
+    public Optional<Integer> findCompanyIdByUserId(Integer userId) {
+        return companyRepository.findCompanyIdByUserId(userId);
     }
 }

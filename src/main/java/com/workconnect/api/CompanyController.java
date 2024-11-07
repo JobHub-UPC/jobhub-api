@@ -58,5 +58,10 @@ public class CompanyController {
     public ResponseEntity<Void> deleteCompany(@PathVariable Integer id){
         adminCompanyService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    } 
+    @GetMapping("/findCompanyIdByUserId/{userId}")
+    public ResponseEntity<Integer> findCompanyIdByUserId(@PathVariable Integer userId){
+        Integer companyId = adminCompanyService.findCompanyIdByUserId(userId).orElseThrow(() -> new RuntimeException("Company not found"));
+        return new ResponseEntity<>(companyId, HttpStatus.OK);
     }
 }
