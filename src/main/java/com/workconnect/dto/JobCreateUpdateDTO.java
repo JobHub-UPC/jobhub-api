@@ -20,6 +20,6 @@ public class JobCreateUpdateDTO {
 
     private String title;
 
-    private Integer companyID;
+    private Integer companyId;
 
 }

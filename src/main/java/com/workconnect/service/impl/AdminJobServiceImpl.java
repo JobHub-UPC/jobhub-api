@@ -53,19 +53,14 @@ public class AdminJobServiceImpl implements AdminJobService {
     @Transactional
     @Override
     public JobDetailsDTO create(JobCreateUpdateDTO jobCreateUpdateDTO) {
-        jobRepository.findById(jobCreateUpdateDTO.getId())
-                .ifPresent(existingJob -> {
-                    throw new RuntimeException("Job already exists");
-                });
-
         // Verificar si la compañía no es nula
-        if (jobCreateUpdateDTO.getCompanyID() == null) {
+        if (jobCreateUpdateDTO.getCompanyId() == null) {
             throw new RuntimeException("Company is required to create a Job");
         }
 
         // Buscar la compañía por ID
-        Company company = companyRepository.findById(jobCreateUpdateDTO.getCompanyID())
-                .orElseThrow(() -> new RuntimeException("Company not found with id: " + jobCreateUpdateDTO.getCompanyID()));
+        Company company = companyRepository.findById(jobCreateUpdateDTO.getCompanyId())
+                .orElseThrow(() -> new RuntimeException("Company not found with id: " + jobCreateUpdateDTO.getCompanyId()));
 
         Job job = jobMapper.toEntity(jobCreateUpdateDTO);
 
@@ -86,8 +81,8 @@ public class AdminJobServiceImpl implements AdminJobService {
         Job jobFromDB = jobRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Job not found with id: " + id));
 
-        Company company = companyRepository.findById(updateJobDTO.getCompanyID())
-                .orElseThrow(()-> new RuntimeException("Company not found with id" + updateJobDTO.getCompanyID()));
+        Company company = companyRepository.findById(updateJobDTO.getCompanyId())
+                .orElseThrow(()-> new RuntimeException("Company not found with id" + updateJobDTO.getCompanyId()));
 
 
         jobFromDB.setJobType(updateJobDTO.getJobType());
