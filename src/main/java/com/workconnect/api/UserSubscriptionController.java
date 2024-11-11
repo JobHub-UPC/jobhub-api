@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user-subscription")
-@PreAuthorize("hasRole('Applicant')")
+@PreAuthorize("hasAnyRole('Applicant','Company')")
 public class UserSubscriptionController {
     private final UserSubscriptionService userSubscriptionService;
 
@@ -49,5 +49,11 @@ public class UserSubscriptionController {
     public ResponseEntity<UserSubscriptionDTO> confirmPurchase(@PathVariable Integer id) {
         UserSubscriptionDTO confirmedPurchase = userSubscriptionService.confirmUserSubscription(id);
         return ResponseEntity.ok(confirmedPurchase);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePurchase(@PathVariable Integer id) {
+        userSubscriptionService.deletePurchase(id);
+        return ResponseEntity.noContent().build();
     }
 }

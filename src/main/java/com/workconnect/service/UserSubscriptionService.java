@@ -11,4 +11,5 @@ public interface UserSubscriptionService {
     List<UserSubscriptionDTO> getAllUserSubscription();
     UserSubscriptionDTO confirmUserSubscription(Integer purchaseId);
     UserSubscriptionDTO getUserSubscriptionById(Integer id);
+    void deletePurchase(Integer id);
 }

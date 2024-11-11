@@ -8,7 +8,7 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserSubscriptionMapper {
+public class    UserSubscriptionMapper {
     private final ModelMapper modelMapper;
     public UserSubscriptionMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;

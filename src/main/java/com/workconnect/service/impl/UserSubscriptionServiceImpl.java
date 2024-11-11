@@ -85,4 +85,9 @@ public class UserSubscriptionServiceImpl implements UserSubscriptionService {
                 .orElseThrow(()->new ResourceNotFoundException("User Subscription not found"));
         return userSubscriptionMapper.toDTO(userSubscription);
     }
+
+    @Override
+    public void deletePurchase(Integer id) {
+        userSubscriptionRepository.deleteById(id);
+    }
 }
