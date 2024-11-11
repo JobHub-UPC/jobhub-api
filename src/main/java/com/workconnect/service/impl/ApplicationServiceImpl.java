@@ -1,5 +1,6 @@
 package com.workconnect.service.impl;
 
+import com.workconnect.dto.ApplicationCreateUpdateDTO;
 import com.workconnect.dto.ApplicationReportDTO;
 import com.workconnect.mapper.ApplicationMapper;
 import com.workconnect.model.entity.Applicant;
@@ -43,6 +44,18 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .map(applicationMapper::toDetailsDto);
     }
 
+    @Override
+    public ApplicationReportDTO create(ApplicationCreateUpdateDTO application) {
+        Application newApplication = applicationMapper.toEntity(application);
+        Job job = jobRepository.findById(application.getJobId())
+                .orElseThrow(() -> new RuntimeException("Job not found with id: " + application.getJobId()));
+        Applicant applicant = applicantRepository.findById(application.getApplicantId()).orElseThrow(() -> new RuntimeException("Applicant not found with id: " + application.getApplicantId()));
+        newApplication.setJob(job);
+        newApplication.setApplicant(applicant);
+        newApplication.setDateCreated(LocalDateTime.now());
+        return applicationMapper.toDetailsDto(applicationRepository.save(newApplication));
+    }
+
     @Transactional(readOnly = true)
     @Override
     public ApplicationReportDTO findById(Integer id) {
@@ -50,36 +63,11 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .orElseThrow(()-> new RuntimeException("Application not found"));
         return applicationMapper.toDetailsDto(application);
     }
-/*
-    @Transactional
+
     @Override
-    public ApplicationReportDTO create(Application application) {
-
-        Job job = jobRepository.findById(application.getJob().getId()).orElseThrow(()-> new RuntimeException("Job not founded with id: " + application.getJob().getId()));
-        Applicant applicant = applicantRepository.findById(application.getApplicant().getId()).orElseThrow(()-> new RuntimeException("Applicant not found with id: " + application.getApplicant().getId()));
-
-        application.setApplicant(applicant);
-        application.setJob(job);
-        return applicationRepository.save(application);
+    public ApplicationReportDTO update(Integer id, ApplicationCreateUpdateDTO updateApplication) {
+        return null;
     }
-
-
-
-    @Transactional
-    @Override
-    public Application update(Integer id, Application updateApplication) {
-        Application applicationFromDb = findById(id);
-
-        Job job = jobRepository.findById(updateApplication.getJob().getId()).orElseThrow(()-> new RuntimeException("Job not founded with id: " + updateApplication.getJob().getId()));
-        Applicant applicant = applicantRepository.findById(updateApplication.getApplicant().getId()).orElseThrow(()-> new RuntimeException("Applicant not found with id: " + updateApplication.getApplicant().getId()));
-
-        applicationFromDb.setDateCreated(LocalDateTime.now());
-        applicationFromDb.setApplicant(applicant);
-        applicationFromDb.setJob(job);
-        return applicationRepository.save(applicationFromDb);
-    }
-
- */
 
     @Transactional
     @Override

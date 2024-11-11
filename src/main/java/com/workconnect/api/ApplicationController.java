@@ -1,5 +1,6 @@
 package com.workconnect.api;
 
+import com.workconnect.dto.ApplicationCreateUpdateDTO;
 import com.workconnect.dto.ApplicationReportDTO;
 import com.workconnect.model.entity.Application;
 import com.workconnect.service.ApplicationService;
@@ -40,22 +41,19 @@ public class ApplicationController {
         return new ResponseEntity<>(application, HttpStatus.OK);
     }
 
-    /*
     @PostMapping
-    public ResponseEntity<Application> create(@RequestBody Application application) {
-        Application createApplication = applicationService.create(application);
+    public ResponseEntity<ApplicationReportDTO> create(@RequestBody ApplicationCreateUpdateDTO application) {
+        ApplicationReportDTO createApplication = applicationService.create(application);
         return new ResponseEntity<>(createApplication, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Application> update(
-            @PathVariable Integer id, @RequestBody Application updatedApplication) {
-        Application updated = applicationService.update(id, updatedApplication);
+    public ResponseEntity<ApplicationReportDTO> update(
+            @PathVariable Integer id, @RequestBody ApplicationCreateUpdateDTO updatedApplication) {
+        ApplicationReportDTO updated = applicationService.update(id, updatedApplication);
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
-
-     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         applicationService.delete(id);

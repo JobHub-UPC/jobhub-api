@@ -1,5 +1,6 @@
 package com.workconnect.mapper;
 
+import com.workconnect.dto.ApplicationCreateUpdateDTO;
 import com.workconnect.dto.ApplicationReportDTO;
 import com.workconnect.model.entity.Application;
 import org.modelmapper.ModelMapper;
@@ -25,7 +26,7 @@ public class ApplicationMapper {
         return applicationReportDTO;
     }
 
-    public Application toEntity(ApplicationReportDTO applicationReportDTO) {
-        return modelMapper.map(applicationReportDTO, Application.class);
+    public Application toEntity(ApplicationCreateUpdateDTO applicationCreateUpdateDTO) {
+        return modelMapper.map(applicationCreateUpdateDTO, Application.class);
     }
 }

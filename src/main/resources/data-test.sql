@@ -41,14 +41,15 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 -- Insertar empleos
-INSERT INTO jobs (title, description, location, job_type, posted_date, deadline_date, salary, company_id)
-VALUES
-    ('Software Engineer', 'Develop and maintain software applications.', 'San Francisco, CA', 'Full-time', '2024-09-01 09:00:00', '2024-10-01 17:00:00', 120000.00, 1),
-    ('Product Manager', 'Lead product development and strategy.', 'New York, NY', 'Full-time', '2024-09-05 09:00:00', '2024-11-01 17:00:00', 150000.00, 2),
-    ('Data Scientist', 'Analyze and interpret complex data.', 'Toronto, ON', 'Full-time', '2024-09-10 09:00:00', '2024-12-01 17:00:00', 130000.00, 3),
-    ('UX Designer', 'Design user-friendly interfaces and experiences.', 'Sydney, NSW', 'Contract', '2024-09-15 09:00:00', '2024-10-15 17:00:00', 90000.00, 4),
-    ('Marketing Specialist', 'Develop and implement marketing strategies.', 'Berlin, DE', 'Part-time', '2024-09-20 09:00:00', '2024-10-20 17:00:00', 70000.00, 5)
-ON CONFLICT DO NOTHING;
+--
+--INSERT INTO jobs (title, description, location, job_type, posted_date, deadline_date, salary, company_id)
+--VALUES
+--    ('Software Engineer', 'Develop and maintain software applications.', 'San Francisco, CA', 'Full-time', '2024-09-01 09:00:00', '2024-10-01 17:00:00', 120000.00, 1),
+--    ('Product Manager', 'Lead product development and strategy.', 'New York, NY', 'Full-time', '2024-09-05 09:00:00', '2024-11-01 17:00:00', 150000.00, 2),
+--    ('Data Scientist', 'Analyze and interpret complex data.', 'Toronto, ON', 'Full-time', '2024-09-10 09:00:00', '2024-12-01 17:00:00', 130000.00, 3),
+--    ('UX Designer', 'Design user-friendly interfaces and experiences.', 'Sydney, NSW', 'Contract', '2024-09-15 09:00:00', '2024-10-15 17:00:00', 90000.00, 4),
+--    ('Marketing Specialist', 'Develop and implement marketing strategies.', 'Berlin, DE', 'Part-time', '2024-09-20 09:00:00', '2024-10-20 17:00:00', 70000.00, 5)
+--ON CONFLICT DO NOTHING;
 
 -- Insertar comunidades
 INSERT INTO communities (name, description, created_date, members_count, is_private)
