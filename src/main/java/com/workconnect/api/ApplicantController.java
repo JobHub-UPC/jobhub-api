@@ -61,4 +61,10 @@ public class ApplicantController {
         applicantService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/findApplicantIdByUserId/{userId}")
+    public ResponseEntity<Integer> findApplicantIdByUserId(@PathVariable Integer userId) {
+        Integer applicantId = applicantService.findApplicantIdByUserId(userId).orElse(null);
+        return new ResponseEntity<>(applicantId, HttpStatus.OK);
+    }
 }

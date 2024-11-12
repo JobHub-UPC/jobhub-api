@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ApplicantService {
     List<ApplicantDetailsDTO> getAll();
@@ -16,4 +17,5 @@ public interface ApplicantService {
     ApplicantDetailsDTO create(ApplicantCreateDTO applicantCreateDTO);
     ApplicantDetailsDTO update(Integer id, ApplicantUpdateDTO updateApplicantDTO);
     void delete(Integer id);
+    Optional<Integer> findApplicantIdByUserId(Integer userId);
 }

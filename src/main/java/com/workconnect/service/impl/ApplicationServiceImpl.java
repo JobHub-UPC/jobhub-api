@@ -37,6 +37,15 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .toList();
     }
 
+    @Transactional
+    @Override
+    public List<ApplicationReportDTO> getByApplicantId(Integer applicantId) {
+        return applicationRepository.findByApplicantId(applicantId)
+                .stream()
+                .map(applicationMapper::toDetailsDto)
+                .toList();
+    }
+
     @Transactional(readOnly = true)
     @Override
     public Page<ApplicationReportDTO> paginate(Pageable pageable) {

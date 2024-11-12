@@ -9,4 +9,5 @@ public interface ApplicationRepository extends JpaRepository<Application, Intege
     List<Application> findByApplicantId(Integer applicantId); // Para obtener las aplicaciones de un aplicante
 
     void deleteByApplicantId(Integer applicantId); // Para eliminar aplicaciones por applicantId
+
 }

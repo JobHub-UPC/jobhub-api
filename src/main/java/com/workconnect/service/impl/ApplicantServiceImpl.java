@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -147,6 +148,10 @@ public class ApplicantServiceImpl implements ApplicantService {
         applicantRepository.delete(applicant);
     }
 
+    @Override
+    public Optional<Integer> findApplicantIdByUserId(Integer userId) {
+        return applicantRepository.findApplicantIdByUserId(userId);
+    }
 
 
 }

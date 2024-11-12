@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface ApplicationService {
     List<ApplicationReportDTO> getAll();
+    List<ApplicationReportDTO>getByApplicantId(Integer applicantId);
     Page<ApplicationReportDTO> paginate(Pageable pageable);
     ApplicationReportDTO create(ApplicationCreateUpdateDTO application);
     ApplicationReportDTO findById(Integer id);
