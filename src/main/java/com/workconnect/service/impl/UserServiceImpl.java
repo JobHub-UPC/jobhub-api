@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
             user.getCompany().setPhone(userProfileDTO.getPhone());
             user.getCompany().setCountry(userProfileDTO.getCountry());
             user.getCompany().setWebsite(userProfileDTO.getWebsite());
-            user.getCompany().setName(userProfileDTO.getName());
+
             user.getCompany().setEmail(userProfileDTO.getEmail());
             user.getCompany().setDescription(userProfileDTO.getDescription());
         }
@@ -74,6 +74,8 @@ public class UserServiceImpl implements UserService {
             user.getApplicant().setEmail(userProfileDTO.getEmail());
             user.getApplicant().setDescription(userProfileDTO.getDescription());
             user.getApplicant().setDegree(userProfileDTO.getDegree());
+            user.getApplicant().setFirstName(userProfileDTO.getFirstName());
+            user.getApplicant().setLastName(userProfileDTO.getLastName());
 
         }
         user.setActive(true);

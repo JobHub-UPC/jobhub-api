@@ -36,7 +36,8 @@ public class UserMapper {
             userProfileDTO.setRole(user.getRole().getName());
             userProfileDTO.setDegree(user.getApplicant().getDegree());
             userProfileDTO.setDescription(user.getApplicant().getDescription());
-            userProfileDTO.setName(user.getApplicant().getFirstName() + " " + user.getApplicant().getLastName());
+            userProfileDTO.setFirstName(user.getApplicant().getFirstName());
+            userProfileDTO.setLastName(user.getApplicant().getLastName());
         }
         return userProfileDTO;
     }
