@@ -63,6 +63,9 @@ public class UserServiceImpl implements UserService {
             user.getCompany().setPhone(userProfileDTO.getPhone());
             user.getCompany().setCountry(userProfileDTO.getCountry());
             user.getCompany().setWebsite(userProfileDTO.getWebsite());
+            user.getCompany().setName(userProfileDTO.getName());
+            user.getCompany().setEmail(userProfileDTO.getEmail());
+            user.getCompany().setDescription(userProfileDTO.getDescription());
         }
         if (user.getApplicant()!=null){
             user.getApplicant().setPhone(userProfileDTO.getPhone());
