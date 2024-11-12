@@ -27,12 +27,16 @@ public class UserMapper {
             userProfileDTO.setCountry(user.getCompany().getCountry());
             userProfileDTO.setWebsite(user.getCompany().getWebsite());
             userProfileDTO.setRole(user.getRole().getName());
+
         }
         if (user.getApplicant()!=null){
             userProfileDTO.setPhone(user.getApplicant().getPhone());
             userProfileDTO.setCountry(user.getApplicant().getCountry());
             userProfileDTO.setCollege(user.getApplicant().getCollege());
             userProfileDTO.setRole(user.getRole().getName());
+            userProfileDTO.setDegree(user.getApplicant().getDegree());
+            userProfileDTO.setDescription(user.getApplicant().getDescription());
+            userProfileDTO.setName(user.getApplicant().getFirstName() + " " + user.getApplicant().getLastName());
         }
         return userProfileDTO;
     }
