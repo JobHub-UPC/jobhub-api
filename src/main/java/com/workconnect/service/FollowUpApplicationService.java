@@ -14,4 +14,6 @@ public interface FollowUpApplicationService {
     FollowUpApplicationDetailsDTO create(FollowUpApplicationCreateUpdateDTO followUpApplicationCreateUpdateDTO);
     FollowUpApplicationDetailsDTO update(Integer id, FollowUpApplicationCreateUpdateDTO followUpApplicationCreateUpdateDTO);
     void delete(Integer id);
+    Integer getFollowUpApplicationsByApplicationId(Integer applicationId);
+    Integer getJobIdByFollowUpId(Integer followUpId);
 }

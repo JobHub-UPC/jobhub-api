@@ -1,5 +1,6 @@
 package com.workconnect.model.entity;
 
+import com.workconnect.model.enums.OrderPhase;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,6 +14,10 @@ public class JobPhase {
 
     @Column(name = "name")
     private String name;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "orderPhase", nullable = false)
+    private OrderPhase orderPhase;
 
     @ManyToOne
     @JoinColumn(name = "job_id",referencedColumnName = "id",

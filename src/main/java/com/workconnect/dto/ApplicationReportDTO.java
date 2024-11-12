@@ -9,7 +9,6 @@ public class ApplicationReportDTO {
     private Integer id;
     private Integer applicantID;
     private String applicantName;
-    private String degree;
-    private String country;
     private LocalDate applicationDate;
+    private String jobName;
 }

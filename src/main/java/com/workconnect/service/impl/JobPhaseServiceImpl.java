@@ -87,4 +87,9 @@ public class JobPhaseServiceImpl implements JobPhaseService {
                         .orElseThrow(()->new RuntimeException("JobPhase Not Founded with id: " + id));
         jobPhaseRepository.delete(jobPhase);
     }
+
+    @Override
+    public List<JobPhaseDetailsDTO> getPhasesByJobId(Integer JobId) {
+        return jobPhaseRepository.findJobPhasesByJobId(JobId).stream().map(jobPhaseMapper::toDetailsDTO).toList();
+    }
 }

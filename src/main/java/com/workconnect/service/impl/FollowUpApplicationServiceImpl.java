@@ -96,4 +96,19 @@ public class FollowUpApplicationServiceImpl implements FollowUpApplicationServic
         followUpApplicationRepository.delete(followUpApplication);
     }
 
+    @Override
+    @Transactional
+    public Integer getFollowUpApplicationsByApplicationId(Integer applicationId) {
+        Integer id=followUpApplicationRepository.findFollowUpApplicationIdByApplicationId(applicationId);
+        if(id==null){return 0;}
+        else{
+            return id;
+        }
+    }
+
+    @Override
+    public Integer getJobIdByFollowUpId(Integer followUpId) {
+        return followUpApplicationRepository.findJobIdByFollowUpId(followUpId);
+    }
+
 }

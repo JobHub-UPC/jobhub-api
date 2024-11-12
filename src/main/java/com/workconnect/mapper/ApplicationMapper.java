@@ -20,9 +20,8 @@ public class ApplicationMapper {
         ApplicationReportDTO applicationReportDTO = modelMapper.map(application, ApplicationReportDTO.class);
         applicationReportDTO.setApplicantName(application.getApplicant().getFirstName() + " " + application.getApplicant().getLastName());
         applicationReportDTO.setApplicantID(application.getApplicant().getId());
-        applicationReportDTO.setDegree(application.getApplicant().getDegree());
         applicationReportDTO.setApplicationDate(application.getDateCreated().toLocalDate());
-        applicationReportDTO.setCountry(application.getApplicant().getCountry());
+        applicationReportDTO.setJobName(application.getJob().getTitle());
         return applicationReportDTO;
     }
 

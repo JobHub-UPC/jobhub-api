@@ -56,4 +56,15 @@ public class FollowUpApplicationController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("/application/{applicationId}")
+    public ResponseEntity<Integer> getFollowUpApplicationsByApplicationId(@PathVariable Integer applicationId){
+        Integer followUpApplications= followUpApplicationService.getFollowUpApplicationsByApplicationId(applicationId);
+        return new ResponseEntity<>(followUpApplications,HttpStatus.OK);
+    }
+
+    @GetMapping("/job/{followUpId}")
+    public ResponseEntity<Integer> getJobIdByFollowUpId(@PathVariable Integer followUpId){
+        Integer jobId= followUpApplicationService.getJobIdByFollowUpId(followUpId);
+        return new ResponseEntity<>(jobId,HttpStatus.OK);
+    }
 }

@@ -55,4 +55,10 @@ public class JobPhaseController {
         jobPhaseService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/job/{jobId}")
+    public ResponseEntity<List<JobPhaseDetailsDTO>> getPhasesByJobId(@PathVariable Integer jobId) {
+        List<JobPhaseDetailsDTO> jobPhases = jobPhaseService.getPhasesByJobId(jobId);
+        return new ResponseEntity<>(jobPhases, HttpStatus.OK);
+    }
 }

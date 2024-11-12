@@ -15,4 +15,5 @@ public interface JobPhaseService {
     JobPhaseDetailsDTO create(JobPhaseCreateUpdateDTO jobPhase);
     JobPhaseDetailsDTO update(Integer id,JobPhaseCreateUpdateDTO jobPhase);
     void delete(Integer id);
+    List<JobPhaseDetailsDTO> getPhasesByJobId(Integer JobId);
 }

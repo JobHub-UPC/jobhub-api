@@ -29,10 +29,10 @@ public class FollowUpApplication {
     @JsonIgnore
 
     // Un seguimiento de aplicación se asocian con una apicación
-    @OneToOne
-    @JoinColumn(name = "application_id", referencedColumnName = "id",
-        foreignKey = @ForeignKey(name = "FK_follow_application"))
-    private Application application;
+        @OneToOne
+        @JoinColumn(name = "application_id", referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "FK_follow_application"))
+        private Application application;
 
 
     @ManyToOne
