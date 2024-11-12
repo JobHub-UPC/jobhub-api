@@ -59,4 +59,11 @@ public class ApplicationController {
         applicationService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/applicant/{applicantId}")
+    public ResponseEntity<List<ApplicationReportDTO>> getByApplicantId(@PathVariable Integer applicantId) {
+        List<ApplicationReportDTO> applications = applicationService.getByApplicantId(applicantId);
+        return new ResponseEntity<>(applications, HttpStatus.OK);
+    }
+
 }

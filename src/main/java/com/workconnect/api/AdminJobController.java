@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/jobs")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('Company')")
+@PreAuthorize("hasAnyRole('Company','Applicant','Admin')")
 public class AdminJobController {
     private final AdminJobService adminJobService;
 
