@@ -68,11 +68,16 @@ public class UserServiceImpl implements UserService {
             user.getApplicant().setPhone(userProfileDTO.getPhone());
             user.getApplicant().setCountry(userProfileDTO.getCountry());
             user.getApplicant().setCollege(userProfileDTO.getCollege());
+            user.getApplicant().setEmail(userProfileDTO.getEmail());
+            user.getApplicant().setDescription(userProfileDTO.getDescription());
+            user.getApplicant().setDegree(userProfileDTO.getDegree());
+
         }
         user.setActive(true);
         User savedUser=userRepository.save(user);
         return userMapper.toDTO(savedUser);
     }
+
     @Transactional(readOnly = true)
     @Override
     public UserProfileDTO findById(Integer id) {

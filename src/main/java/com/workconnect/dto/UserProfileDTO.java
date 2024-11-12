@@ -10,7 +10,9 @@ public class UserProfileDTO {
     private ERole role;
     private String phone;
     private String country;
-
+    private String name;
     private String website;
     private String college;
+    private String description;
+    private String degree;
 }
